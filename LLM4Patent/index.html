@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM4Patent</title>
+    <meta property="og:locale" content="en">
+    <meta property="og:site_name" content="LLM4Patent">
+    <meta property="og:title" content="LLM4Patent">
+    <link rel="canonical" href="https://wangqiyao.me/LLM4Patent/">
+    <meta property="og:url" content="https://wangqiyao.me/LLM4Patent/">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--primary-color);
+            margin-top: 1.5em;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; border-bottom: 1px solid var(--light-gray); padding-bottom: 0.3em; }
+        h3 { font-size: 1.5em; }
+
+        .header {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-img {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 200px;
+            height: auto;
+            margin-right: 2em;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--primary-color);
+            padding: 1em;
+            border-radius: 5px;
+            margin-bottom: 2em;
+        }
+
+        .nav a {
+            color: white;
+            margin: 0 1em;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.5em;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+
+        .paper-box {
+            display: flex;
+            margin-bottom: 2em;
+            padding-bottom: 1em;
+            border-bottom: 1px dashed var(--light-gray);
+        }
+
+        .paper-box-image {
+            flex: 0 0 150px;
+            margin-right: 1em;
+        }
+
+        .paper-box-image img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+
+        .paper-box-text {
+            flex: 1;
+        }
+
+        .paper-box-text p {
+            margin: 0.5em 0;
+        }
+
+        .news-item {
+            margin-bottom: 1em;
+            padding-left: 1em;
+            border-left: 3px solid var(--light-gray);
+        }
+
+        .news-item .date {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 20px;
+            background-color: var(--light-gray);
+            padding: 1em;
+            border-radius: 5px;
+            margin-bottom: 2em;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 0.5em;
+        }
+
+        .sidebar a {
+            color: var(--primary-color);
+        }
+
+        .main-content {
+            display: flex;
+            gap: 2em;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .paper-box {
+                flex-direction: column;
+            }
+            
+            .paper-box-image {
+                margin-right: 0;
+                margin-bottom: 1em;
+            }
+        }
+
+        /* Dropdown menu styles */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 2px;
+            z-index: 1;
+            border-radius: 5px;
+            list-style-type: none;
+        }
+
+        .dropdown-content li {
+            display: block;
+            padding: 2px;
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            text-decoration: none;
+            color: gray;
+        }
+
+        .dropdown-content strong {
+            font-weight: bold;
+            color: black;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <a href="https://wangqiyao.me">Homepage</a>
+        <a href="https://ipeval.wangqiyao.me">IPEval</a>
+        <a href="https://ipbench.wangqiyao.me/">IPBench</a>
+        <a href="https://autopatent.wangqiyao.me">AutoPatent</a>
+    </div>
+
+    <div class="main-content">
+        <div class="sidebar sticky">
+            <div id="toc">
+                <strong>Table of Contents</strong>
+                <ul>
+                    <li><a href="#news">News</a></li>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#our-work">Our Work</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h1>Large Language Models for Patent</h1>
+            <p><strong>Team</strong>: Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences; Dalian University of Technology</p>
+            <p><strong>Student Member</strong>: <a href="https://wangqiyao.me/">Qiyao Wang</a></p>
+            <div>
+                <strong>Collections</strong>: 
+                <a href="https://huggingface.co/collections/QiYao-Wang/llms-for-patent-678e6dbc8af7a3998738cc57" target="_blank">
+                    <img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-blue?label=Collection-LLMs4Patent" alt="Hugging Face Badge">
+                </a>
+            </div>
+
+            <h2 id="news">News</h2>
+            <div>
+                <ul>
+                    <li>
+                        <strong>[2024-12-20]</strong> 🥳 The AutoPatent has been fortunate to receive attention and coverage from 
+                        <a href="https://mp.weixin.qq.com/s/H6zsbruPl4wtYOFCOIphBA" target="_blank">Xin Zhi Yuan</a>, 
+                        and it will continue to be expanded and improved in the future.
+                    </li>
+                    <li>
+                        <strong>[2024-12-13]</strong> 🎉 We release the first version of AutoPatent.
+                    </li>
+                </ul>
+            </div>
+
+            <h2 id="introduction">Introduction</h2>
+            <p></p>
+
+            <h2 id="our-work">Our Work</h2>
+            <p><sup>*</sup>Equal Contribution and <sup>†</sup> Corresponding Author</p>
+
+            <div class='paper-box'>
+                <div class='paper-box-image'>
+                    <div>
+                        <div class="badge">Preprint</div>
+                        <img src='../images/publications/ipbench.png' alt="IPBench" width="100%">
+                    </div>
+                </div>
+                <div class='paper-box-text'>
+                    <p><a href="">IPBench: Benchmarking the Knowledge of Large Language Models in Intellectual Property</a></p>
+                    <p><em><strong>Qiyao Wang</strong>, Guhong Chen, Hongbo Wang, Huaren Liu, Minghui Zhu, Zhifei Qin, Linwei Li, Yilin Yue, Shiqiang Wang, Jiayan Li, Yihang Wu, Ziqiang Liu, Longze Chen, Run Luo, Liyang Fan, Jiaming Li, Lei Zhang, Kan Xu, Hongfei Lin, Hamid Alinejad-Rokny, Shiwen Ni<sup>†</sup>, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
+                    <p>
+                        <a href="https://ipbench.wangqiyao.me">Website</a> |
+                        <a href="https://arxiv.org/abs/2504.15524">Paper</a> |
+                        <a href="https://github.com/IPBench/IPBench">Github</a>
+                        <a href="https://github.com/IPBench/IPBench">
+                            <img src="https://img.shields.io/github/stars/IPBench/IPBench" alt="IPBench">
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+            <div class='paper-box'>
+                <div class='paper-box-image'>
+                    <div>
+                        <div class="badge">Preprint</div>
+                        <img src='../images/publications/autopatent.png' alt="AutoPatent" width="100%">
+                    </div>
+                </div>
+                <div class='paper-box-text'>
+                    <p><a href="https://arxiv.org/pdf/2412.09796">AutoPatent: A Multi-Agent Framework for Automatic Patent Generation</a></p>
+                    <p><em><strong>Qiyao Wang<sup>*</sup></strong>, Shiwen Ni<sup>*</sup>, Huaren Liu, Shule Lu, Guhong Chen, Xi Feng, Chi Wei, Qiang Qu, Hamid Alinejad-Rokny, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
+                    <p><strong>TL;DR: </strong>We introduce Draft2Patent, a novel task for generating full-length patents (~17K tokens) from drafts, along with the D2P benchmark. Our AutoPatent framework, leveraging a multi-agent system, excels in patent generation, with Qwen2.5-7B outperforming larger models like GPT-4o and Qwen2.5-72B in metrics and human evaluations.</p>
+                    <p>
+                        <a href="https://autopatent.wangqiyao.me">Website</a> |
+                        <a href="https://arxiv.org/pdf/2412.09796">Paper</a> |
+                        <a href="https://github.com/QiYao-Wang/AutoPatent">Github</a>
+                        <a href="https://github.com/QiYao-Wang/AutoPatent">
+                            <img src="https://img.shields.io/github/stars/QiYao-Wang/AutoPatent" alt="AutoPatent">
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class='paper-box'>
+                <div class='paper-box-image'>
+                    <div>
+                        <div class="badge">Arxiv</div>
+                        <img src='../images/publications/ipeval.png' alt="IPEval" width="100%">
+                    </div>
+                </div>
+                <div class='paper-box-text'>
+                    <p><a href="https://arxiv.org/pdf/2406.12386">IPEval: A Bilingual Intellectual Property Agency Consultation Evaluation Benchmark for Large Language Models</a></p>
+                    <p><em><strong>Qiyao Wang</strong>, Jianguo Huang, Shule Lu, Yuan Lin<sup>†</sup>, Kan Xu, Liang Yang, Hongfei Lin</em></p>
+                    <p><strong>TL;DR: </strong>IPEval introduces a benchmark for assessing Large Language Models' (LLMs) performance in intellectual property (IP) law with 2,657 questions. It evaluates LLMs across key IP areas using zero-shot, 5-few-shot, and Chain of Thought (CoT) approaches. Findings highlight the need for specialized IP LLMs due to language proficiency bias. The benchmark is crucial for developing LLMs with deeper IP knowledge.</p>
+                    <p>
+                        <a href="https://ipeval.wangqiyao.me">Website</a> |
+                        <a href="https://arxiv.org/pdf/2406.12386">Paper</a> |
+                        <a href="https://github.com/QiYao-Wang/IPEval">Github</a> |
+                        <a href="https://huggingface.co/datasets/Mathsion/IPEval">HuggingFace</a>
+                        <a href="https://github.com/QiYao-Wang/ipeval">
+                            <img src="https://img.shields.io/github/stars/QiYao-Wang/ipeval" alt="IPEval">
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="margin-top: 3em; padding: 1em 0; border-top: 1px solid var(--light-gray); text-align: center;">
+        &copy; 2025 Qiyao Wang. Last updated: July 2025.
+    </footer>
+
+    <script>
+        // Dynamic table of contents generation
+        const toc = document.getElementById('toc');
+        const ul = toc.querySelector('ul');
+        
+        // Clear existing items
+        ul.innerHTML = '';
+        
+        // Get all headers
+        const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headers.forEach(header => {
+            if (!header.id) {
+                header.id = header.textContent.replace(/\s+/g, '-').toLowerCase();
+            }
+            
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `#${header.id}`;
+            a.textContent = header.textContent;
+            
+            li.appendChild(a);
+            ul.appendChild(li);
+        });
+    </script>
+</body>
+</html>
