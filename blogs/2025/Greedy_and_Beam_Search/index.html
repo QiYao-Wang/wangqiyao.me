@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  
+<head>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+      --text-color: #333;
+      --sidebar-width: 280px;
+      --content-width: 1200px;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 20px;
+      background-color: #f9f9f9;
+    }
+
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--primary-color);
+      margin-top: 1.5em;
+    }
+
+    h1 { 
+      font-size: 2.2em;
+      margin-top: 0.8em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid var(--light-gray);
+      padding-bottom: 0.3em;
+    }
+    
+    h2 { 
+      font-size: 1.8em; 
+      border-bottom: 1px solid var(--light-gray); 
+      padding-bottom: 0.3em; 
+      margin-top: 1.8em;
+    }
+    
+    h3 { 
+      font-size: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    /* 导航栏样式 */
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      background-color: var(--primary-color);
+      padding: 1em;
+      border-radius: 5px;
+      margin-bottom: 2em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav a {
+      color: white;
+      margin: 0 1em;
+      font-weight: 500;
+      padding: 0.5em 0;
+      transition: all 0.3s;
+    }
+
+    .nav a:hover {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    /* 主要内容布局 */
+    .main-content {
+      display: flex;
+      gap: 2em;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+      background: white;
+      padding: 2em;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 侧边栏样式 */
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      width: var(--sidebar-width);
+      padding: 1.5em;
+      border-radius: 10px;
+      margin-bottom: 2em;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar strong {
+      display: block;
+      font-size: 1.1em;
+      color: var(--primary-color);
+      padding-bottom: 0.8em;
+      margin-bottom: 0.8em;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 0.6em;
+      position: relative;
+      padding-left: 1em;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 6px;
+      height: 6px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:hover:before {
+      background-color: var(--accent-color);
+      transform: scale(1.3);
+    }
+
+    .sidebar a {
+      color: var(--primary-color);
+      display: block;
+      padding: 0.3em 0;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent-color);
+      padding-left: 5px;
+    }
+
+    /* 博客特定样式 */
+    .blog-meta {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-bottom: 1.5em;
+      display: flex;
+      align-items: center;
+    }
+
+    .blog-tag {
+      background-color: var(--light-gray);
+      color: var(--primary-color);
+      padding: 0.2em 0.6em;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-left: 0.8em;
+    }
+
+    .blog-content {
+      margin-top: 1.5em;
+    }
+
+    .blog-content p {
+      margin-bottom: 1.2em;
+    }
+
+    pre {
+      background-color: #f5f5f5;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #f5f5f5;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    figure {
+      margin: 1.5em 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    figcaption {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-top: 0.5em;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--secondary-color);
+      padding-left: 1em;
+      margin: 1.5em 0;
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+
+    /* 数学公式样式 */
+    .math {
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: relative;
+        width: auto;
+        top: auto;
+      }
+      
+      .nav {
+        justify-content: center;
+      }
+      
+      .nav a {
+        margin: 0 0.8em;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- 修改MathJax配置以支持行内公式 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 启用行内数学公式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']] // 显示数学公式
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+  
+</head>
+
+<body>
+  <div class="nav">
+    <a href="https://wangqiyao.me/">Homepage</a>
+    <a href="https://wangqiyao.me/blogs/">Blogs</a>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar sticky">
+      <div id="toc">
+        <strong>Table of Contents</strong>
+        <ul></ul>
+      </div>
+    </div>
+    
+    <div class="content">
+      <h1 id="greedy-and-beam-search">Greedy Search and Beam Search</h1>
+      <div class="blog-meta">
+        <span>Feb. 26, 2025 · Qiyao Wang</span>
+        <span class="blog-tag">#Decoding</span>
+      </div>
+
+      <div class="blog-content">
+        <h2 id="greedy-search">Greedy Search</h2>
+        <p>贪婪解码，每一步从词汇表中选择具有最高条件概率的 token 作为 next token，直到遇到结束 token 或达到最大的上下文长度。</p>
+        <p>在撰写贪婪解码的代码前，我对自回归解码中撰写的 Sampler 基类进行了完善，为了提高代码的复用性，在其中提供了 get_next_token 接口。</p>
+
+<pre>
+<code class="language-python">class Sampler:
+    def __init__(self, model_name: str="Qwen2.5-0.5B") -> None:
+        self.device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
+
+    def encode(self, text: str):
+        return self.tokenizer.encode(text, return_tensors="pt").to(self.device)
+
+    def decode(self, ids: torch.Tensor):
+        return self.tokenizer.decode(ids)
+
+    def get_next_token_prob(self, input_ids:torch.Tensor):
+        # 禁止计算图中梯度的计算
+        with torch.no_grad():
+            logits = self.model(input_ids=input_ids).logits
+        # 在此之前，logits 形状为 torch.Size([1, 1, 151936])
+        # 获得 Tensor 的最后一维度 torch.Size([151936])
+        logits = logits[0, -1, :]
+        probs = torch.softmax(logits, dim=-1)
+        return probs
+
+    def plot_scores(self, scores, title, k):
+        """
+        :param scores: 排序对象
+        :param title: 图片标题
+        :param k: 展示的数量
+        :return: None
+        """
+        top_indices = torch.argsort(scores, descending=True)[:k]
+        tokens = [self.decode(idx) for idx in top_indices]
+
+        if self.device == "cpu":
+            top_probs = scores[top_indices].numpy()
+        else:
+            top_probs = scores[top_indices].cpu().numpy()
+
+        colors = ['#E95B68', '#C4C956', '#58BB7B', '#CAC1C5', '#87601F', '#F7311B',
+                  '#C53D39', '#38658F', '#242ABC', '#9DA52F', '#329018', '#D415C5',
+                  '#6DCE59', '#ADF212', '#9CF042']
+
+        colors = colors[0: len(top_indices)]
+
+        fig = go.Figure(
+            data=[
+                go.Bar(x=tokens, y=top_probs, marker_color=colors, textposition="inside")
+            ]
+        )
+        fig.update_layout(title=title)
+        fig.show()
+
+    def get_next_token(self, text: str, k: int):
+        input_ids = self.encode(text)
+        next_token_probs = self.get_next_token_prob(input_ids)
+        top_indices = torch.argsort(next_token_probs, descending=True)[:k]
+        tokens = [self.decode(idx) for idx in top_indices]
+        return {
+            "token": tokens,
+            "next_token_probs": next_token_probs,
+            "ids": top_indices
+        }
+
+    def get_next_token_plot_pipeline(self, text: str, k: int=10):
+        input_ids = self.encode(text)
+        next_token_prob=self.get_next_token_prob(input_ids)
+        self.plot_scores(next_token_prob, text, k=k)</code>
+</pre>
+
+        <p>基于 Sampler 基类，构建 GreedySampler，该类以 Sampler 类为父类，继承其中的方法。</p>
+
+<pre>
+<code class="language-python">class GreedySampler(Sampler):
+    def __call__(self, prompt, max_new_tokens=10):
+        predictions = []
+        result = prompt
+        # generate tokens until the max_new_tokens
+        for i in range(max_new_tokens):
+            # greedy search => k=1
+            next_token_dict =  self.get_next_token(result, k=1)
+            next_token = next_token_dict['token'][0]
+            result += next_token
+            next_token_probs = next_token_dict['next_token_probs']
+            ids = next_token_dict['ids']
+            predictions.append(next_token_probs[ids].item())
+
+            # 判断是否生成结束 token
+            if next_token == self.tokenizer.eos_token_id:
+                break
+
+        return result</code>
+</pre>
+
+        <p>基于 Qwen2.5-0.5B-Instruct 进行实验，输入 prompt 为 "the color of sky is"，其返回结果为："The color of sky is always changing. The sky is blue when the sun is up, and it is white when the sun"。</p>
+        <p>Greedy Search 本质是一种贪心算法，虽然在解码策略上它较为简单和高效，所需的计算资源较其他解码策略来说较为简单，仍存在一些缺点：</p>
+        <ul>
+            <li>多样性且无长远考虑：短视、贪心地每次输出概率最大的 token，忽略了多样性层面、长远的考虑。</li>
+            <li>重复性：由于选择最可能的词，导致实验的可重复性高，但是结果容易被预测。</li>
+            <li>错误放大：贪心算法无法纠正错误，一旦前序解码中存在一定的错误，之后的选择都会受到影响。</li>
+        </ul>
+
+        <h2 id="beam-search">Beam Search</h2>
+        <p>束搜索相较于 Greedy Search 而言，不是只考虑每一步的最优情况，而是在束宽度 $k$ 参数下同时跟踪多个潜在序列。</p>
+        <p>在每个阶段，选择 top-$k$ 个序列，不只考虑即时的高概率词，同时关注整体序列的概率。针对束搜索解码中可能包含重复的相同词序列的问题，使用 n-gram 惩罚的概念，即如果一个 n-gram 序列被生成放入序列中，而该 n-gram 已经在序列中存在，则设置其概率为 0。</p>
+
+<pre>
+<code class="language-python">class Beam:
+    def __init__(self, device, size, input_ids, socre, output=None):
+        self.device = device
+        self.size = size # num_beam => k
+        self.input_ids = input_ids.to(self.device)
+        self.socre = socre
+        self.output = output.to(self.device) if output is not None else None
+
+    # get input_ids
+    def get_current_state(self):
+        return self.input_ids
+
+    # get probs of the sentence
+    def get_score(self):
+        return self.socre
+
+    # create a new instance of Beam class after the top-k selection
+    def extend(self, token_id, score):
+        # the input_ids of new sentence
+        new_input_ids = torch.cat([self.input_ids, token_id.unsqueeze(0)], dim=-1)
+        # the probs score of new sentence
+        new_score = self.socre * score
+        new_output = torch.cat([self.output, token_id.unsqueeze(0)], dim=-1) if self.output is not None else new_input_ids
+        # 递归
+        return Beam(self.device, self.size, new_input_ids, new_score, new_output)</code>
+</pre>
+
+<pre>
+<code class="language-python">class BeamSampler(Sampler):
+    def beam_decode(self, ids):
+        return self.tokenizer.decode(ids.squeeze().tolist())
+
+    # Get the top-k id with the greatest probs
+    # 静态方法不能访问类的属性或实例的属性，它只与输入参数有关
+    @staticmethod
+    def get_topk(prob, k=1):
+        scores, token_ids = torch.topk(prob, k=k, dim=-1)
+        return scores, token_ids
+
+    def __call__(self, prompt, max_new_tokens=10, num_beam=1):
+        input_ids = self.encode(prompt)
+
+        # 初始化 Beam，只有最初的节点 A1
+        beams = [Beam(self.device, num_beam, input_ids, 1) for _ in range(num_beam)]
+
+        for i in range(max_new_tokens):
+            # Each timestep
+            all_next_token_prob = []
+            # 对每一束进行操作，实时计算每一束的整个序列的 prob
+            for beam in beams:
+                # 对每一束进行预测后续的内容
+                # 假设 k=3，A1 -> B2,C2,D2（每一个还是一个概率分布）
+                next_token_probs = self.get_next_token_prob(input_ids=beam.get_current_state())
+                all_next_token_prob.append(next_token_probs)
+
+            # 对于每一 timestep，不同束的所有概率一起来看
+            all_topk_scores = []
+            all_topk_token_ids = []
+
+            for prob in all_next_token_prob:
+                # 对于 B2,C2,D2 概率分布进行处理，分别选择自己的 topk
+                socres, token_ids = self.get_topk(prob, k=num_beam)
+                all_topk_scores.append(socres)
+                all_topk_token_ids.append(token_ids)
+
+            all_topk_scores = torch.stack(all_topk_scores)
+            all_topk_token_ids = torch.stack(all_topk_token_ids)
+
+            # 进行新 beam 的选择，超过 num_beam 的就不选了
+            new_beams = []
+            for j, beam in enumerate(beams):
+                for k in range(num_beam):
+                    score = all_topk_scores[j][k].item()
+                    token_id = all_topk_token_ids[j][k].unsqueeze(0)
+                    new_beam = beam.extend(token_id, score)
+                    new_beams.append(new_beam)
+
+            # 对已添加新 token 的所有 beam 根据整个序列的 prob 排序
+            beams = sorted(new_beams, key=lambda b: b.get_score(), reverse=True)[:num_beam]
+
+        generated_text = self.beam_decode(beams[0].output[:, len(input_ids[0]):])
+        # [:,len(input_ids[0]):] 表示排除输入部分
+
+        return prompt + generated_text</code>
+</pre>
+
+        <p>Beam Search 的代码较为复杂，之后可以提供一个可视化的图来更直观的表述。其中每个序列的 probs score 计算方法仍是基于条件概率</p>
+        <div class="math">
+          $$
+          p(\mathbf{x})=\prod_{t=1}^Tp(x_1)\cdot p(x_2\mid x_1)\cdots p(x_T\mid x_{T-1},x_{T-2},...,x_{1})
+          $$
+        </div>
+        <p>每一个 Beam 增加了新 token 后，会直接计算其代表的整个序列的分数，最后 Beams 列表中分数最大的路径则为应该选择的路径。从全局视角看也是贪婪解码，因为选择了分数最大的 beam，而从局部视野看，增加了可选择路径的宽度。相较于 Greedy Search 而言需要更多计算资源，需要在每一步维护和计算 $k$ 个序列的概率；也无法保证找到最可能的序列，尤其是在 $k \ll |V|$ 时。</p>
+
+        <h2 id="reference">Reference</h2>
+
+        <h2 id="contact">Contact</h2>
+        <p>There may be some errors present. If you find any, please feel free to contact me at <code>wangqiyao@mail.dlut.edu.cn</code>. I would appreciate it!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 动态生成目录
+    const toc = document.getElementById('toc');
+    toc.innerHTML = '<strong>Table of Contents</strong>';
+
+    const ul = document.createElement('ul');
+    toc.appendChild(ul);
+
+    // 获取所有标题
+    const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    headers.forEach(header => {
+        // 忽略 h1，不添加到目录中
+        if (header.tagName === 'H1') return;
+
+        const li = document.createElement('li');
+        li.style.marginLeft = `${(parseInt(header.tagName[1]) - 1) * 10}px`;
+
+        const a = document.createElement('a');
+        a.href = `#${header.id || header.innerText.replace(/\s+/g, '-').toLowerCase()}`;
+        a.textContent = header.innerText;
+        a.target = "_self";
+
+        // 如果是 h2，使用黑色实心点
+        if (header.tagName === 'H2') {
+            li.style.listStyleType = 'disc';  // 黑色实心圆点
+            a.style.color = 'black';  // h2 为黑色
+        }
+        // 如果是 h3，使用空心圆点
+        else if (header.tagName === 'H3') {
+            li.style.listStyleType = 'circle';  // 空心圆点
+            a.style.color = 'gray';  // h3 为灰色
+        }
+        // 如果是 h4，使用方块
+        else if (header.tagName === 'H4') {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h4 为灰色
+        }
+        // 如果是 h5 和 h6，使用方块
+        else {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h5 和 h6 为灰色
+        }
+
+        if (!header.id) {
+            header.id = header.innerText.replace(/\s+/g, '-').toLowerCase();
+        }
+
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    // 添加MathJax类型提示
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
+  </script>
+</body>
+</html>
