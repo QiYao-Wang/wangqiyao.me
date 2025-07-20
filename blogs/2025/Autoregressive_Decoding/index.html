@@ -1,1 +1,480 @@
-s
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  
+<head>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+      --text-color: #333;
+      --sidebar-width: 280px;
+      --content-width: 1200px;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 20px;
+      background-color: #f9f9f9;
+    }
+
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--primary-color);
+      margin-top: 1.5em;
+    }
+
+    h1 { 
+      font-size: 2.2em;
+      margin-top: 0.8em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid var(--light-gray);
+      padding-bottom: 0.3em;
+    }
+    
+    h2 { 
+      font-size: 1.8em; 
+      border-bottom: 1px solid var(--light-gray); 
+      padding-bottom: 0.3em; 
+      margin-top: 1.8em;
+    }
+    
+    h3 { 
+      font-size: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    /* 导航栏样式 */
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      background-color: var(--primary-color);
+      padding: 1em;
+      border-radius: 5px;
+      margin-bottom: 2em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav a {
+      color: white;
+      margin: 0 1em;
+      font-weight: 500;
+      padding: 0.5em 0;
+      transition: all 0.3s;
+    }
+
+    .nav a:hover {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    /* 主要内容布局 */
+    .main-content {
+      display: flex;
+      gap: 2em;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+      background: white;
+      padding: 2em;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 侧边栏样式 */
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      width: var(--sidebar-width);
+      padding: 1.5em;
+      border-radius: 10px;
+      margin-bottom: 2em;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar strong {
+      display: block;
+      font-size: 1.1em;
+      color: var(--primary-color);
+      padding-bottom: 0.8em;
+      margin-bottom: 0.8em;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 0.6em;
+      position: relative;
+      padding-left: 1em;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 6px;
+      height: 6px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:hover:before {
+      background-color: var(--accent-color);
+      transform: scale(1.3);
+    }
+
+    .sidebar a {
+      color: var(--primary-color);
+      display: block;
+      padding: 0.3em 0;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent-color);
+      padding-left: 5px;
+    }
+
+    /* 博客特定样式 */
+    .blog-meta {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-bottom: 1.5em;
+      display: flex;
+      align-items: center;
+    }
+
+    .blog-tag {
+      background-color: var(--light-gray);
+      color: var(--primary-color);
+      padding: 0.2em 0.6em;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-left: 0.8em;
+    }
+
+    .blog-content {
+      margin-top: 1.5em;
+    }
+
+    .blog-content p {
+      margin-bottom: 1.2em;
+    }
+
+    pre {
+      background-color: #f5f5f5;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #f5f5f5;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    figure {
+      margin: 1.5em 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    figcaption {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-top: 0.5em;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--secondary-color);
+      padding-left: 1em;
+      margin: 1.5em 0;
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+
+    /* 数学公式样式 */
+    .math {
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: relative;
+        width: auto;
+        top: auto;
+      }
+      
+      .nav {
+        justify-content: center;
+      }
+      
+      .nav a {
+        margin: 0 0.8em;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- 修改MathJax配置以支持行内公式 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 启用行内数学公式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']] // 显示数学公式
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+  
+</head>
+
+<body>
+  <div class="nav">
+    <a href="https://wangqiyao.me/">Homepage</a>
+    <a href="https://wangqiyao.me/blogs/">Blogs</a>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar sticky">
+      <div id="toc">
+        <strong>Table of Contents</strong>
+        <ul></ul>
+      </div>
+    </div>
+    
+    <div class="content">
+      <h1 id="autoregressive-decoding">Autoregressive Decoding: Basic Manner of Decoder-Only LLMs</h1>
+      <div class="blog-meta">
+        <span>Feb. 25, 2025 · Qiyao Wang</span>
+        <span class="blog-tag">#Decoding</span>
+      </div>
+
+      <div class="blog-content">
+        <p>Transformers 架构的语言模型主要包含两大类，即以 BERT 为代表的 Encoder-Only 的 LM 和以 GPT 为代表的 Decoder-Only 的 LM。当前的 LLM 以 Decoder-Only 架构作为其骨架，在此基础上，以自回归（Autoregressive）的方式以 Next Token Prediction 任务在大规模语料上进行预训练。</p>
+        
+        <p>自回归机制简单来说，即模型无法看到当前时间步 timestep 之后的数据内容，而是需要以预测的形式向后延伸。在自回归解码中，大模型的最后一层 Transformer 层的 MLP 的维度与词表大小 $|V|$ 相一致，该层 MLP 则用来表征最后的预测词表分布，此时的 MLP 的原始输出被称为 logits。在 logits 的基础上，应用 softmax 函数，得到词表中各个词语的离散概率分布。解码策略此时会起作用，通过从词表的离散概率分布中进行采样，选择最后输出的下一个 token。</p>
+        
+        <p>给定序列 $\mathbf{x} = (x_1,x_2,\dots,x_T)$，在时间步 timestep $t$ 时，模型仅可见 $x_1,x_2,...,x_{t-1}$ 这些 token，而 $x_{t},...,x_T$ 不可见，通过 attention mask 进行掩码。以公式的形式表示自回归模型的计算方式，如下式所示</p>
+        
+        <div class="math">
+          $$
+          \begin{aligned}
+          p(\mathbf{x})&=p(x_1)\cdot p(x_2\mid x_1)\cdots p(x_T\mid x_{T-1},x_{T-2},...,x_{1})\\
+          &=\prod_{t=1}^Tp(x_t\mid x_{< t})
+          \end{aligned}
+          $$
+        </div>
+
+        <h2 id="deco-repository">deco repository</h2>
+        <p>Note: All codes will be uploaded at <a href="https://github.com/QiYao-Wang/deco">deco</a>.</p>
+        
+        <p>所有的代码将基于 torch 和 transformers 进行实现，其中 python 版本为 3.10，可以通过 <code>pip install vllm==0.7.3</code> 来快速构建相关依赖。</p>
+        <p>本节的 <a href="https://github.com/QiYao-Wang/deco/blob/main/docs/deco1-autoregressive_decoding.ipynb">Jupyter Notebook</a>。</p>
+        
+        <h2 id="code">Code</h2>
+        <p>由于自回归解码其实是大模型运行机制的一个基础，还未涉及真正的解码的选择策略，本代码只包含对下一个 token 的预测。需要注意的是，并未细节的写入 model 的推理过程，如对输入序列的掩码操作等。</p>
+
+<pre>
+<code class="language-python">import torch
+import plotly.graph_objects as go
+from transformers import AutoTokenizer,AutoModelForCausalLM
+
+class Sampler:
+    def __init__(self, model_name: str="Qwen2.5-0.5B") -> None:
+        self.device = 'cuda' if torch.cuda.is_available() else 'mps' if torch.backends.mps.is_available() else 'cpu'
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
+
+    def encode(self, text: str):
+        return self.tokenizer.encode(text, return_tensors="pt").to(self.device)
+
+    def decode(self, ids: torch.Tensor):
+        return self.tokenizer.decode(ids)
+
+    def get_next_token_prob(self, input_ids:torch.Tensor):
+        # 禁止计算图中梯度的计算
+        with torch.no_grad():
+            logits = self.model(input_ids=input_ids).logits
+        # 在此之前，logits 形状为 torch.Size([1, 1, 151936])
+        # 获得 Tensor 的最后一维度 torch.Size([151936])
+        logits = logits[0, -1, :]
+        probs = torch.softmax(logits, dim=-1)
+        return probs
+
+    def plot_scores(self, scores, title, k):
+        """
+        :param scores: 排序对象
+        :param title: 图片标题
+        :param k: 展示的数量
+        :return: None
+        """
+        top_indices = torch.argsort(scores, descending=True)[:k]
+        tokens = [self.decode(idx) for idx in top_indices]
+
+        if self.device == "cpu":
+            top_probs = scores[top_indices].numpy()
+        else:
+            top_probs = scores[top_indices].cpu().numpy()
+
+        colors = ['#E95B68', '#C4C956', '#58BB7B', '#CAC1C5', '#87601F', '#F7311B',
+                  '#C53D39', '#38658F', '#242ABC', '#9DA52F', '#329018', '#D415C5',
+                  '#6DCE59', '#ADF212', '#9CF042']
+
+        colors = colors[0: len(top_indices)]
+
+        fig = go.Figure(
+            data=[
+                go.Bar(x=tokens, y=top_probs, marker_color=colors, textposition="inside")
+            ]
+        )
+        fig.update_layout(title=title)
+        fig.show()
+
+    def inference(self, text: str):
+        input_ids = self.encode(text)
+        next_token_prob=self.get_next_token_prob(input_ids)
+        self.plot_scores(next_token_prob, text, k=10)</code>
+</pre>
+
+        <p>输入："the color of sky is" 来预测下一个单词</p>
+
+<pre>
+<code class="language-python">sampler = Sampler("Your model path")
+text = "The color of sky is"
+sampler.inference(text)
+</code>
+</pre>
+
+        <p>如图1所示，其中 token 分布的第一个为 "always"，其概率为0.0693。</p>
+        
+        <figure>
+          <img src="/blogs/2025/Autoregressive_Decoding/probs.png" alt="probs">
+          <figcaption>图1：the color of sky is 的下一个 token 的概率分布</figcaption>
+        </figure>
+
+        <h2 id="reference">Reference</h2>
+
+        <h2 id="contact">Contact</h2>
+        <p>There may be some errors present. If you find any, please feel free to contact me at <code>wangqiyao@mail.dlut.edu.cn</code>. I would appreciate it!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 动态生成目录
+    const toc = document.getElementById('toc');
+    toc.innerHTML = '<strong>Table of Contents</strong>';
+
+    const ul = document.createElement('ul');
+    toc.appendChild(ul);
+
+    // 获取所有标题
+    const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    headers.forEach(header => {
+        // 忽略 h1，不添加到目录中
+        if (header.tagName === 'H1') return;
+
+        const li = document.createElement('li');
+        li.style.marginLeft = `${(parseInt(header.tagName[1]) - 1) * 10}px`;
+
+        const a = document.createElement('a');
+        a.href = `#${header.id || header.innerText.replace(/\s+/g, '-').toLowerCase()}`;
+        a.textContent = header.innerText;
+        a.target = "_self";
+
+        // 如果是 h2，使用黑色实心点
+        if (header.tagName === 'H2') {
+            li.style.listStyleType = 'disc';  // 黑色实心圆点
+            a.style.color = 'black';  // h2 为黑色
+        }
+        // 如果是 h3，使用空心圆点
+        else if (header.tagName === 'H3') {
+            li.style.listStyleType = 'circle';  // 空心圆点
+            a.style.color = 'gray';  // h3 为灰色
+        }
+        // 如果是 h4，使用方块
+        else if (header.tagName === 'H4') {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h4 为灰色
+        }
+        // 如果是 h5 和 h6，使用方块
+        else {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h5 和 h6 为灰色
+        }
+
+        if (!header.id) {
+            header.id = header.innerText.replace(/\s+/g, '-').toLowerCase();
+        }
+
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    // 添加MathJax类型提示
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
+  </script>
+</body>
+</html>
