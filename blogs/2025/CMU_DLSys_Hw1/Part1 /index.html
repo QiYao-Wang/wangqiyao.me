@@ -1,1 +1,653 @@
-s
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  
+<head>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+      --text-color: #333;
+      --sidebar-width: 280px;
+      --content-width: 1200px;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 20px;
+      background-color: #f9f9f9;
+    }
+
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--primary-color);
+      margin-top: 1.5em;
+    }
+
+    h1 { 
+      font-size: 2.2em;
+      margin-top: 0.8em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid var(--light-gray);
+      padding-bottom: 0.3em;
+    }
+    
+    h2 { 
+      font-size: 1.8em; 
+      border-bottom: 1px solid var(--light-gray); 
+      padding-bottom: 0.3em; 
+      margin-top: 1.8em;
+    }
+    
+    h3 { 
+      font-size: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    /* 导航栏样式 */
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      background-color: var(--primary-color);
+      padding: 1em;
+      border-radius: 5px;
+      margin-bottom: 2em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav a {
+      color: white;
+      margin: 0 1em;
+      font-weight: 500;
+      padding: 0.5em 0;
+      transition: all 0.3s;
+    }
+
+    .nav a:hover {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    /* 主要内容布局 */
+    .main-content {
+      display: flex;
+      gap: 2em;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+      background: white;
+      padding: 2em;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 侧边栏样式 */
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      width: var(--sidebar-width);
+      padding: 1.5em;
+      border-radius: 10px;
+      margin-bottom: 2em;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar strong {
+      display: block;
+      font-size: 1.1em;
+      color: var(--primary-color);
+      padding-bottom: 0.8em;
+      margin-bottom: 0.8em;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 0.6em;
+      position: relative;
+      padding-left: 1em;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 6px;
+      height: 6px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:hover:before {
+      background-color: var(--accent-color);
+      transform: scale(1.3);
+    }
+
+    .sidebar a {
+      color: var(--primary-color);
+      display: block;
+      padding: 0.3em 0;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent-color);
+      padding-left: 5px;
+    }
+
+    /* 博客特定样式 */
+    .blog-meta {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-bottom: 1.5em;
+      display: flex;
+      align-items: center;
+    }
+
+    .blog-tag {
+      background-color: var(--light-gray);
+      color: var(--primary-color);
+      padding: 0.2em 0.6em;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-left: 0.8em;
+    }
+
+    .blog-content {
+      margin-top: 1.5em;
+    }
+
+    .blog-content p {
+      margin-bottom: 1.2em;
+    }
+
+    pre {
+      background-color: #f5f5f5;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #f5f5f5;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    figure {
+      margin: 1.5em 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    figcaption {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-top: 0.5em;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--secondary-color);
+      padding-left: 1em;
+      margin: 1.5em 0;
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+
+    /* 数学公式样式 */
+    .math {
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: relative;
+        width: auto;
+        top: auto;
+      }
+      
+      .nav {
+        justify-content: center;
+      }
+      
+      .nav a {
+        margin: 0 0.8em;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- 修改MathJax配置以支持行内公式 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 启用行内数学公式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']] // 显示数学公式
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+  
+</head>
+
+<body>
+  <div class="nav">
+    <a href="https://qiyao-wang.github.io/">Homepage</a>
+    <a href="https://qiyao-wang.github.io/blogs/">Blogs</a>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar sticky">
+      <div id="toc">
+        <strong>Table of Contents</strong>
+        <ul></ul>
+      </div>
+    </div>
+    
+    <div class="content">
+      <h1 id="cmu-dlsys-course-homework-1-implementation-and-reflection-part1">CMU DLSys Course Homework 1: Implementation and Reflection (Part1)</h1>
+      <div class="blog-meta">
+        <span>Jan. 08, 2025 - Jan. 10, 2025 · Qiyao Wang</span>
+        <span class="blog-tag">#MLSys</span>
+      </div>
+
+      <div class="blog-content">
+        <p>本周看完了课程的 Lecture 3/4/5，这几节课程是对自动求导（Automatic Differentiation）的讲解，其中反向传播、计算图是重点。本文针对 <a href="https://github.com/dlsyscourse/hw1">Homework 1</a> 进行实践与思考，其中 Part 1 中包含了 needle 的基本信息和 Question 1 和 Question 2 的内容。</p>
+
+        <h2 id="introduction-of-homework-1">Introduction of Homework 1</h2>
+        <p>通过 Homework 1 自己实践构建一个 needle（Necessary Elements of Deep Learning） 库，其中本文最关键的是自动求导框架的构建，并在 <a href="https://qiyao-wang.github.io/blogs/2025/CMU_DLSys_Hw0/">Homework 0</a> 中的双层神经网络上进行应用。</p>
+        <p>本文对于 needle 的构建是建立在 numpy 库和 CPU 基础上的，后续的作业也会实现相应的底层多维数组以及应用到 GPU 节点上。</p>
+        <p>Homework 1 的 needle 库包含两个重要的文件，即 autograd.py 和 ops_mathematic.py，其中前者定义了计算图框架以及自动求导框架，后者包含在计算图中会用到的运算符（compute function），及运算符对应的求导函数（gradient function）。</p>
+
+        <h3 id="basic-concept-of-needle">Basic Concept of Needle</h3>
+        <p>本文中应用 needle 库中最重要的几个类包括张量 Tensor 和其继承的父类 Value，以及对应的张量运算符 TensorOp 和其继承的父类 Op。下面对这几个类进行详细解释</p>
+        
+        <h4>Value (the most abstract class)</h4>
+        <p>Value 类是抽象程度最高的类，其实例化的每一个对象都作为计算图中的一个节点（甚至可直接认为其对象代表一个计算图，因为可通过节点进行轨迹追溯）。其中包含四个重要的部分：</p>
+        <ul>
+          <li><code>op: Optional[Op]</code> - 该语句定义了节点 Value 所链接的其他节点进行的操作</li>
+          <li><code>inputs: List["Value"]</code> - 包含了计算图中与当前节点相关的节点</li>
+          <li><code>cached_data: NDArray</code> - 该节点存储的具体的值</li>
+          <li><code>requires_grad: bool</code> - 该节点是否需要求导</li>
+        </ul>
+
+        <h4>Tensor (the subclass of value and the interface with user)</h4>
+        <p>Tensor 类是 Value 的子类，并且对应一个实际的张量节点（计算图中的一个多维数组），计算图中实际应用 Tensor 类而非 Value 类。</p>
+
+        <h4>Op (Operations)</h4>
+        <p>Op 类用于构建计算图中包含的具体的运算符，每一个运算符需要定义计算的前馈函数 <code>compute()</code> 和该运算符对应的求导过程 <code>gradient()</code>，用于后续的反向传播。</p>
+
+        <h4>TensorOp (the subclass of Op)</h4>
+        <p>TensorOp 类是 Op 的子类，它继承了 Op 中的所有操作符，并且能够返回 Tensor 类型的结果。</p>
+
+        <p>在实际运行 needle 库时，需要使用的是 Tensor 类，而 TensorOp 等类都内置于 Tensor 中，以 $c = a + b$ 为例</p>
+
+<pre>
+<code class="language-python">import needle as ndl
+a = ndl.Tensor([1], dtype="float32")
+b = ndl.Tensor([2], dtype="float32")
+c = a + b # c: Tensor([3], dtype="float32")</code>
+</pre>
+
+        <p>上述代码的实际运算过程如下：</p>
+        <ol>
+          <li><code>Tensor.__add__</code> 调用 Tensor 类中的 "__add__" 方法</li>
+          <li><code>TensorOp.__call__</code></li>
+          <li><code>Tensor.make_from_op(op: Op, inputs: List["Value"])</code> 首先为 c 实例化了一个新的 Tensor 对象</li>
+          <li>在返回之前，经过了 <code>Value.realize_cached_data()</code> 或 <code>Tensor.detach()</code> 的计算</li>
+          <li>进入 Op 类的前馈计算函数中 <code>EWiseAdd.compute</code> 才能得到第 3 步中返回的新 Tensor 对象 c</li>
+        </ol>
+
+        <h3 id="lazy-mode-and-detach-function">LAZY_MODE and Detach Function</h3>
+        <p>如下方的代码块所示，为 Value 类中的成员函数 <code>make_from_op()</code>，其中包含了这两个元素</p>
+
+<pre>
+<code class="language-python">@classmethod
+def make_from_op(cls, op: Op, inputs: List["Value"]):
+  value = cls.__new__(cls) # create a new object of Value Class
+  value._init(op, inputs) # initialize object
+  if not LAZY_MODE:
+    if not value.requires_grad:
+      return value.detach()
+    value.realize_cached_data()
+  return value</code>
+</pre>
+
+        <p>LAZY_MODE 用来控制计算立即执行还是延迟执行。当设置 <code>ndl.autograd.LAZY_MODE = True</code> 时，运行 $c = a + b$ 时并不会立刻进行 <code>realize_cached_data()</code> 的计算，此时的 <code>c.cached_data is None == True</code>，这样只构建计算图但不进行计算，能够有效地优化内存占用，当需要使用 $c$ 的数值时，可以利用 <code>c.data()</code> 来通过前馈计算图获得该节点的 cache_data 数值。</p>
+
+        <p>Detach function 用来控制节点是否与计算图链接。如下方的代码所示，虽然看起来简单应该不会占用太多内存，但是由于 Tensor 的计算实质上是对计算图的构建，如图 1 所示，在新节点建立时，背后其实构建了新的计算图，当计算图过多如在迭代中，容易内存/显存溢出。通过 detach 将返回一个新的 Tensor 节点，这个节点孑然一身与其他计算图不相连，即不保留计算图的轨迹。而 detach 是在 <code>requires_grad=False</code> 时才调用的，正因无需计算梯度所以可以只保存为一个单一节点。</p>
+
+<pre>
+<code>for i in range(100):
+  sum_loss = sum_loss + x * x</code>
+</pre>
+
+        <figure>
+          <img src="detach.png" alt="detach function">
+          <figcaption>图1：detach 函数示例：$y=x+1$</figcaption>
+        </figure>
+
+        <h2 id="question-1-2-implementing-forward-and-backward-computation">Question 1 & 2: Implementing forward and backward computation</h2>
+        <p>在 needle 中，计算图通过 TensorOp 类下属的各个子类进行实际的张量运算，每一个运算符都具有 compute 成员函数，负责前馈计算，本节的多维数组无需自行构建，而是使用 numpy 的 NDArray 实现，为了后续的移植，以 <code>import numpy as array_api</code> 的形式导入 numpy 包。下面对运算符进行依次实现，在本节的代码中将包含每个运算符类的初始化函数（__init__）、前馈函数（compute）以及求导函数（gradient）。</p>
+
+        <p>前馈计算直接按照各运算符的定义执行即可，但每个运算符的求导都较为复杂，需要首先明确的是，该求导的对象是损失函数 loss function $\ell$ 对当前节点 $v_{i+1}$ 的输入节点 $v_i$ 的导数（此处假设 $v_{i+1}$ 仅有一个输入，即 $v_i$，当具有多个输入时，分别计算偏导数即可），$v_{i+1}$ 是其 inputs $v_i$ 在 对应运算符上的函数，即 $v_{i+1}=g(v_{i})$，其中 $\text{out_grad} = \frac{\partial \ell}{\partial v_{i+1}}$，那么导数为</p>
+
+        <div class="math">
+          $$
+          \frac{\partial \ell}{\partial v_{i}}=\frac{\partial \ell}{\partial v_{i+1}}\cdot\frac{\partial v_{i+1}}{\partial v_i}=\text{out_grad}\cdot\frac{\partial v_{i+1}}{\partial v_{i}}=\text{out_grad}\cdot g'(v_i)
+          $$
+        </div>
+
+        <p>gradient function 会返回的是针对 inputs 中每个节点的偏导数元组。</p>
+
+        <h3 id="powerscalar">PowerScalar</h3>
+        <p>对张量进行乘方运算 $X^n$，例如 $X^2=XX^T$，numpy中提供了相应的乘方接口，直接调用即可</p>
+        <p>下面详细推导张量乘方运算的求导函数，假设计算式为 $v_2=v_1^n$，则 loss function 对 $v_2$ 的导数可计算为</p>
+        <div class="math">
+          $$
+          \frac{\partial\ell}{\partial v_1}=\frac{\partial\ell}{\partial v_2}\cdot\frac{\partial v_2}{\partial v_1}=\text{out_grad}\cdot nv_1^{n-1}
+          $$
+        </div>
+
+<pre>
+<code class="language-python">class PowerScalar(TensorOp):
+  def __init__(self, scalar:int):
+    self.scalar = scalar
+
+  def compute(self, a: NDArray) -> NDArray:
+    return array_api.power(a, self.scalar)
+
+  def gradient(self, out_grad, node):
+    a = node.inputs[0]
+    return out_grad * self.scalar * array_api.power(a, self.scalar - 1)</code>
+</pre>
+
+        <h3 id="ewisediv">EWiseDiv</h3>
+        <p>EWise 开头的函数均是<strong>逐元素（elementwise）</strong>的运算，该函数是对两个张量进行逐元素运算，即 $A \oslash B$</p>
+        <p>该函数需要考虑分类讨论三种情况：</p>
+        <ol>
+          <li>张量 $A$ 和张量 $B$ 的形状（维度）不同，逐元素的运算要求两张量形状相同</li>
+          <li>张量 $B$ 的元素全为 0，虽然在 numpy 中会考虑除 0 的情况</li>
+          <li>正常情况或张量 $B$ 的元素部分为 0</li>
+        </ol>
+
+        <p>下面详细推导逐元素除法函数的导函数。由于逐元素，因此可以从单个元素的角度来进行计算，其中会使用类似标量的求导法则，对 $v_3=\frac{v_2}{v_1}$ 如下式所示</p>
+        <div class="math">
+          $$
+          \frac{\partial\ell}{\partial v_1}=\frac{\partial \ell}{\partial v_3}\cdot\frac{\partial v_3}{\partial v_2}=\text{out_grad}\circ(v_2 \circ (-1) \oslash (v_1\circ v_1))
+          $$
+          $$
+          \frac{\partial\ell}{\partial v_2}=\frac{\partial \ell}{\partial v_3}\cdot\frac{\partial v_3}{\partial v_2}=\text{out_grad}\circ(1\oslash v_1)
+          $$
+        </div>
+
+<pre>
+<code class="language-python">class EWiseDiv(TensorOp):
+  def compute(self, a, b):
+    if a.shape != b.shape:
+      raise RuntimeError("The shapes of the two tensors are inconsistent.")
+    if b.all() == 0:
+      raise RuntimeError("All elements of the divisor tensor are zero.")
+    return array_api.divide(a, b)
+
+  def gradient(self, out_grad, node):
+    lhs, rhs = node.inputs
+    return out_grad / rhs, out_grad * lhs / rhs / rhs * (-1)</code>
+</pre>
+
+        <h3 id="matmul">MatMul</h3>
+        <p>矩阵乘法 $AB$，numpy 在其中的矩阵乘法函数中已经考虑了两个矩阵的形状的约束。</p>
+        <p>对于该函数的导数，假设 $v_3 = v_1 * v_2$，即 lhs 为 $v_1$，rhs 为 $v_2$，那么</p>
+        <div class="math">
+          $$
+          \frac{\partial \ell}{\partial v_1}=\frac{\partial \ell}{\partial v_3}\cdot\frac{\partial v_3}{\partial v_1} = \text{out_grad}\cdot v_2^T
+          $$
+          $$
+          \frac{\partial \ell}{\partial v_2}=\frac{\partial \ell}{\partial v_3}\cdot\frac{\partial v_3}{\partial v_2} = \text{out_grad}\cdot v_1^T
+          $$
+        </div>
+
+<pre>
+<code class="language-python">class MatMul(TensorOp):
+  def compute(self, a, b):
+    return array_api.matmul(a, b)
+
+  def gradient(self, out_grad, node):
+    lhs, rhs = node.inputs
+    dlhs = array_api.matmul(out_grad, rhs.T)
+    drhs = array_api.matmul(lhs.T, out_grad)
+
+    if dlhs.shape != lhs.shape:
+      dlhs = summation(dlhs, tuple(range(len(dlhs.shape) - len(lhs.shape))))
+    if drhs.shape != rhs.shape:
+      drhs = summation(drhs, tuple(range(len(drhs.shape) - len(rhs.shape))))
+    assert (dlhs.shape == lhs.shape)
+    assert (drhs.shape == rhs.shape)
+    return dlhs, drhs</code>
+</pre>
+
+        <h3 id="summation">Summation</h3>
+        <p>计算给定轴的和，其中 axes 有多种情况。</p>
+        <ol>
+          <li>axes 为单个整数，即按指定轴求和（0（默认值） 为列，1 为行）</li>
+          <li>axes 为元组，如 axes=(0,1)，则沿指定的多个轴求和，在矩阵中此时为求矩阵所有元素的和</li>
+          <li>axes 为 None，即求矩阵的所有元素的和</li>
+        </ol>
+
+        <p>对于 summation 的导函数，假设输入张量为 $v_i=\mathbb{R}^{n_1\times n_2\times\cdots\times n_k}$，其中对某些维度 axes 进行求和，即 $v_{i+1}=\text{summation}(v_i, \text{axes})$，当 $\text{axes}={d_1,d_2,\cdots,d_m}$时，输出张量的形状应为 $(n_1,n_2,\cdots,n_k)\setminus(n_{d_1},n_{d_2},\cdots,n_{d_m})$，即</p>
+        <div class="math">
+          $$
+          v_{i+1} = \sum_{d_1,d_2,\cdots,d_m}v_i[\cdots,d_1,d_2,\cdots,d_m,\cdots]
+          $$
+        </div>
+
+<pre>
+<code class="language-python">class Summation(TensorOp):
+  def __init__(self, axes: Optional[tuple] = None):
+    self.axes = axes
+
+  def compute(self, a):
+    return array_api.sum(a, axes=self.axes)
+
+  def gradient(self, out_grad, node):
+    input_shape = node.inputs[0].shape
+    shape = list(input_shape)
+    if self.axes is not None:
+      if isinstance(self.axes, int):
+        shape[self.axes] = 1
+      else:
+        for index in self.axes:
+          shape[index] = 1
+    else:
+      shape = [1 for _ in range(len(shape))]
+
+    out_grad = array_api.reshape(out_grad, shape)
+    return out_grad * array_api.ones(input_shape, dtype=array_api.float32)</code>
+</pre>
+
+        <h3 id="broadcastto">BroadcastTo</h3>
+        <p>广播机制，将一个较小形状的张量扩展到较大形状的张量。如假设</p>
+        <div class="math">
+          $$X=\begin{bmatrix}x_1&x_2&x_3\end{bmatrix}\in\mathbb{R}^{1\times 3}$$
+        </div>
+        <p>而期望的形状为 $\mathbb{R}^{2\times 3}$，那么可以将其在 axes=0 的方向复制两次，广播为</p>
+        <div class="math">
+          $$\tilde{X}=\begin{bmatrix}x_1&x_2&x_3\\x_1&x_2&x_3\end{bmatrix}$$
+        </div>
+
+<pre>
+<code class="language-python">class BroadcastTo(TensorOp):
+  def __init__(self, shape):
+    self.shape = shape
+
+  def compute(self, a):
+    return array_api.broadcast_to(a, self.shape)
+
+  def gradient(self, out_grad, node):
+    input_shape = node.inputs[0].shape
+    output_shape = out_grad.shape
+    grad = out_grad
+    for i in range(len(output_shape)-len(input_shape)):
+      grad = summation(grad, axes=0)
+    for index, dim in enumerate(input_shape):
+      if dim == 1:
+        grad = summation(grad, axes=index)
+    return reshape(grad, input_shape)</code>
+</pre>
+
+        <h3 id="ewisepow">EWisePow</h3>
+        <p>逐元素乘方，即 $v_3=v_1^{v_2}$，其中 $v_2$ 的元素必须全是整数。前馈函数直接使用 numpy 中的接口即可。下面详细推导求导函数，下面的运算均为逐元素运算</p>
+        <div class="math">
+          $$
+          \frac{\partial \ell}{\partial v_1} = \frac{\partial \ell}{\partial v_3}\cdot\frac{\partial v_3}{\partial v_1}=\text{out_grad}\circ v_2 \circ v_1^{v_2-1}
+          $$
+          $$
+          \frac{\partial \ell}{\partial v_2} = \frac{\partial \ell}{\partial v_3}\cdot\frac{\partial v3}{\partial v_2}=\text{out_grad}\circ v_1^{v_2}\circ \ln{v_1}, \text{Where }v_1>0
+          $$
+        </div>
+
+<pre>
+<code class="language-python">class EWisePow(TensorOp):
+  def compute(self, a: NDArray, b: NDArray):
+    return array_api.power(a, b)
+
+  def gradient(self, out_grad, node):
+    # a^b
+    a, b = node.inputs
+    if b.dtype.is_integer:
+      raise TypeError("dtype should be int!")
+    grad_a = out_grad * b * power(a, add(b, -1))
+    grad_b = out_grad * power(a, b) * log(a)
+    grad_b = array_api.where(a>0, grad_b, 0.0)
+    return grad_a, grad_b
+</code>
+</pre>
+
+        <p>本节实现了基本的运算符中的前馈逻辑和求导逻辑，即 Question 1 和 Question 2，其中可能会存在一定的错误，如果您发现了请联系我！谢谢！</p>
+
+        <h2 id="reference">Reference</h2>
+        <p>[1] xx要努力. (2022, 11). Deep Learning System-Homework1. <i>知乎专栏</i>. <a href="https://zhuanlan.zhihu.com/p/579465666">https://zhuanlan.zhihu.com/p/579465666</a>.</p>
+        <p>[2] Some parts of the code or math were consulted from ChatGPT and KimiChat.</p>
+
+        <h2 id="contact">Contact</h2>
+        <p>There may be some errors present. If you find any, please feel free to contact me at <code>wangqiyao@mail.dlut.edu.cn</code>. I would appreciate it!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 动态生成目录
+    const toc = document.getElementById('toc');
+    toc.innerHTML = '<strong>Table of Contents</strong>';
+
+    const ul = document.createElement('ul');
+    toc.appendChild(ul);
+
+    // 获取所有标题
+    const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    headers.forEach(header => {
+        // 忽略 h1，不添加到目录中
+        if (header.tagName === 'H1') return;
+
+        const li = document.createElement('li');
+        li.style.marginLeft = `${(parseInt(header.tagName[1]) - 1) * 10}px`;
+
+        const a = document.createElement('a');
+        a.href = `#${header.id || header.innerText.replace(/\s+/g, '-').toLowerCase()}`;
+        a.textContent = header.innerText;
+        a.target = "_self";
+
+        // 如果是 h2，使用黑色实心点
+        if (header.tagName === 'H2') {
+            li.style.listStyleType = 'disc';  // 黑色实心圆点
+            a.style.color = 'black';  // h2 为黑色
+        }
+        // 如果是 h3，使用空心圆点
+        else if (header.tagName === 'H3') {
+            li.style.listStyleType = 'circle';  // 空心圆点
+            a.style.color = 'gray';  // h3 为灰色
+        }
+        // 如果是 h4，使用方块
+        else if (header.tagName === 'H4') {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h4 为灰色
+        }
+        // 如果是 h5 和 h6，使用方块
+        else {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h5 和 h6 为灰色
+        }
+
+        if (!header.id) {
+            header.id = header.innerText.replace(/\s+/g, '-').toLowerCase();
+        }
+
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    // 添加MathJax类型提示
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
+  </script>
+</body>
+</html>
