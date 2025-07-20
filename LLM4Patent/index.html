@@ -18,6 +18,7 @@
             --light-gray: #ecf0f1;
             --dark-gray: #7f8c8d;
             --text-color: #333;
+            --sidebar-width: 280px;
         }
 
         body {
@@ -95,16 +96,16 @@
         }
 
         .paper-box-image {
-            flex: 0 0 250px; /* Increased from 150px to 250px */
-            margin-right: 1.5em; /* Slightly increased margin */
+            flex: 0 0 250px;
+            margin-right: 1.5em;
         }
 
         .paper-box-image img {
             width: 100%;
             height: auto;
             border: 1px solid #ddd;
-            border-radius: 4px; /* Added subtle rounding */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Added subtle shadow */
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .paper-box-text {
@@ -126,26 +127,81 @@
             color: var(--accent-color);
         }
 
+        /* 侧边栏美化 */
         .sidebar {
             position: sticky;
             top: 20px;
-            background-color: var(--light-gray);
-            padding: 1em;
-            border-radius: 5px;
+            width: var(--sidebar-width);
+            padding: 1.5em;
+            border-radius: 10px;
             margin-bottom: 2em;
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            height: fit-content;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar strong {
+            display: block;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            padding-bottom: 0.8em;
+            margin-bottom: 0.8em;
+            border-bottom: 2px solid var(--secondary-color);
         }
 
         .sidebar ul {
             list-style-type: none;
             padding-left: 0;
+            margin: 0;
         }
 
         .sidebar li {
-            margin-bottom: 0.5em;
+            margin-bottom: 0.6em;
+            position: relative;
+            padding-left: 1em;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar li:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 6px;
+            height: 6px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar li:hover:before {
+            background-color: var(--accent-color);
+            transform: scale(1.3);
         }
 
         .sidebar a {
             color: var(--primary-color);
+            display: block;
+            padding: 0.3em 0;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            color: var(--accent-color);
+            padding-left: 5px;
         }
 
         .main-content {
@@ -155,11 +211,18 @@
 
         .content {
             flex: 1;
+            min-width: 0; /* Prevent flex item overflow */
         }
 
         @media (max-width: 768px) {
             .main-content {
                 flex-direction: column;
+            }
+            
+            .sidebar {
+                position: relative;
+                width: auto;
+                top: auto;
             }
             
             .paper-box {
@@ -218,13 +281,11 @@
     </div>
 
     <div class="main-content">
-        <div class="sidebar sticky">
+        <div class="sidebar">
             <div id="toc">
                 <strong>Table of Contents</strong>
                 <ul>
-                    <li><a href="#news">News</a></li>
-                    <li><a href="#introduction">Introduction</a></li>
-                    <li><a href="#our-work">Our Work</a></li>
+                    <!-- Dynamic content will be inserted here by JavaScript -->
                 </ul>
             </div>
         </div>
@@ -341,7 +402,7 @@
         ul.innerHTML = '';
         
         // Get all headers
-        const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        const headers = document.querySelectorAll('h1, h2');
         headers.forEach(header => {
             if (!header.id) {
                 header.id = header.textContent.replace(/\s+/g, '-').toLowerCase();
@@ -352,8 +413,35 @@
             a.href = `#${header.id}`;
             a.textContent = header.textContent;
             
+            // Add indentation for h2 elements
+            if (header.tagName.toLowerCase() === 'h2') {
+                a.style.paddingLeft = '15px';
+                a.style.fontSize = '0.95em';
+                a.style.fontWeight = 'normal';
+            }
+            
             li.appendChild(a);
             ul.appendChild(li);
+        });
+
+        // Highlight current section in TOC while scrolling
+        window.addEventListener('scroll', function() {
+            const fromTop = window.scrollY + 100;
+            const tocLinks = document.querySelectorAll('#toc a');
+            
+            tocLinks.forEach(link => {
+                const section = document.querySelector(link.hash);
+                if (
+                    section.offsetTop <= fromTop &&
+                    section.offsetTop + section.offsetHeight > fromTop
+                ) {
+                    link.style.color = var(--accent-color);
+                    link.style.fontWeight = 'bold';
+                } else {
+                    link.style.color = '';
+                    link.style.fontWeight = '';
+                }
+            });
         });
     </script>
 </body>
