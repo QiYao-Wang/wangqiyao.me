@@ -288,9 +288,9 @@
 
 <body>
   <div class="nav">
-    <a href="https://qiyao-wang.github.io/">Homepage</a>
-    <a href="https://qiyao-wang.github.io/blogs/">Blogs</a>
-    <a href="https://qiyao-wang.github.io/paper_daily/">Paper Daily</a>
+    <a href="https://wangqiyao.me/">Homepage</a>
+    <a href="https://wangqiyao.me/blogs/">Blogs</a>
+    <a href="https://wangqiyao.me/paper_daily/">Paper Daily</a>
   </div>
 
   <div class="main-content">
@@ -320,7 +320,7 @@
         <p>为了在无需 prompting 的前提下激发模型的推理能力，本文从 decoding 阶段出发，先不考虑包含 top-k、top-p 及 temperature 在内的采样方法，大语言模型可以通过 greedy decoding 的方式来采样，即每次选择出现概率最大的 Token。本文的基本思路是，在第一个解码步（first decoding step）时，不仅只采样 greedy decoding 对应的 Token，而是引入超参数 k，选择第一个解码步中 top-k 个 Tokens，在后续的解码步中，分别对该 k 个 Token 进行贪婪解码，如图 1 所示。</p>
         
         <figure>
-          <img src="Illustration_of_CoT-decoding.jpg" alt="Illustration_of_CoT-decoding-image">
+          <img src="/blogs/2025/CoT-Decoding/Illustration_of_CoT-decoding.jpg" alt="Illustration_of_CoT-decoding-image">
           <figcaption>图1：CoT-Decoding 解释</figcaption>
         </figure>
         
@@ -335,7 +335,7 @@
         <p>即，在给定前 $t-1$ 个 Tokens 解码第 $t$ 步时，第 $t$ 步中概率最大的两个 Token $x_t^1$ 和 $x_t^2$ 的差值，从该 CoT-Path 的第一个 Token 到结尾 Token 的该差值之和的归一化即为置信度。这样的定义能够得到所有解码步中采样该 Token 的平均置信度，但是我认为（作者在结论中也有提到）这种置信度计算方法似乎不太准确，因为并不是所有步的置信度都是同等重要。通过该置信度的计算方式，所有的 $k$ 个解码路径都能够被对应的 $\Delta$ 值进行标记。图 1 中右下角的图例可以看到颜色越深则代表该 CoT-Path 的 confidence $\Delta$ 越大，甚至这样的指标在该问题示例上与结果的正确性有一定的相关性，即在正确答案上的置信度大于错误答案；与 greedy decoding 这种没有 CoT-Path 的采样结果相比，CoT-Path 具有更大的 $\Delta$。同时作者阐明，在 $k=10$ 的 top-10 解码路径中抽取最大置信度的路径的实验中，88% 的数据都存在 CoT-Path。如图 2 所示，为 PaLM-2 模型在 GSM8K 和 Year Parity 数据集上的示例，其中括号中的蓝色数字即表示对应 CoT-Path 的置信度。</p>
         
         <figure>
-          <img src="example-palm.jpg" alt="example-palm-image">
+          <img src="/blogs/2025/CoT-Decoding/example-palm.jpg" alt="example-palm-image">
           <figcaption>图2：PaLM 模型在 GSM8K 和 Year Parity 数据集上的示例</figcaption>
         </figure>
 
@@ -349,7 +349,7 @@
         <p>下面的实验通过修改不同的解码方式和对解码路径的排序方式来说明 CoT-Decoding 的置信度方法在 CoT-Path 路径的选择上的优势。图 3 中第一行贪婪解码 Greedy decoding，只选择 first step tokens 中概率最大的 token 进行后续的一系列解码步骤（同样是贪婪解码）；图 3 中后三行均代表采取选择多个（此处固定 $k=10$） first step token 的 CoT-Path，其中 CoT-Path 的最终选择方式分别为：对数概率最大的，长度正则化后对数概率最大的以及本文的置信度方式。可以看到的是，CoT-Decoding 的置信度方法在 GSM8K 和 Year Parity 两个数据集上的性能提升十分显著。</p>
         
         <figure>
-          <img src="CoT-Path_extraction_method.png" alt="CoT-Path_extraction_method">
+          <img src="/blogs/2025/CoT-Decoding/CoT-Path_extraction_method.png" alt="CoT-Path_extraction_method">
           <figcaption>图3：PaLM-2 L 模型上对不同的 CoT-Path 抽取方法的实验结果。</figcaption>
         </figure>
 
@@ -357,7 +357,7 @@
         <p>上文也提到了 Self-Consistency<sup>[5]</sup> 以采样多次投票的方式选出更可靠的 CoT-Path，本文对比了在没有 CoT-Prompt（Let's think step by step）的情况下 Self-Consistency 和 CoT-Decoding 的效果，可以发现，在没有 CoT-Prompt 的情况下，CoT-Decoding 在 GSM8K 上的性能能够显著优于贪婪解码和 Self-Consistency，CoT-Decoding 通过能够选择多个 first step token 来引入 CoT-Path 的多样性。</p>
         
         <figure>
-          <img src="without_prompt.png" alt="without_prompt">
+          <img src="/blogs/2025/CoT-Decoding/without_prompt.png" alt="without_prompt">
           <figcaption>图4：CoT-Decoding and self-consistency without prompts on GSM8K.</figcaption>
         </figure>
 
@@ -365,7 +365,7 @@
         <p>本文 CoT-Decoding 在 first step tokens 中进行分支，即图 5 中的 Step 0，如图 5 所示，其中讨论了两个问题在不同的解码步骤均进行分支，first step 的分支可以有效地提升 CoT-Path 的多样性，由于这样一种自回归解码的方式，后续的分支会受到前序解码步骤的影响，如果前序分支中存在错误会严重地影响后续解码的正确性个。分支的深度对于不同的任务而言，适合的深度也不同。</p>
         
         <figure>
-          <img src="branch.png" alt="branch">
+          <img src="/blogs/2025/CoT-Decoding/branch.png" alt="branch">
           <figcaption>图5：不同分支深度的讨论。</figcaption>
         </figure>
 
@@ -381,7 +381,7 @@
         <p>其中 $\Delta_{k,a}$ 表示第 $k$ 条解码路径，答案为 $a$。如图 6 所示，聚合路径的方式在有无 prompt 的情况下，均达到了最优的性能。</p>
         
         <figure>
-          <img src="result-combining-cot-decoding-with-cot-prompting.png" alt="result-combining-cot-decoding-with-cot-prompting">
+          <img src="/blogs/2025/CoT-Decoding/result-combining-cot-decoding-with-cot-prompting.png" alt="result-combining-cot-decoding-with-cot-prompting">
           <figcaption>图6：将 CoT-Decoding 和 CoT-Prompting 结合。</figcaption>
         </figure>
         
@@ -393,19 +393,19 @@
         <p>与其他的采样方法相比：Top-k sampling、Top-p sampling、Beam search、Temperature sample。将最基础的贪婪解码作为模型是否推理的 board line，可以看到，这些采样方法都无法激活模型的推理能力，甚至会有所损失，而 CoT-Decoding 能够达到 25.1% 的性能，相对贪婪解码而言大幅度提升。</p>
         
         <figure>
-          <img src="7.png" alt="7">
+          <img src="/blogs/2025/CoT-Decoding/7.png" alt="7">
         </figure>
 
         <h4>CoT-decoding effectively elicits reasoning across language models and model scales.</h4>
         <p>该部分讨论了 CoT-Decoding 的泛化能力与 Scale up 的能力，如图 8 所示，在不同的模型上，CoT-Decoding 相较于 Greedy decoding 而言均展现了更好的性能，同时如图 9 所示，CoT-Decoding 能够在不同参数量的模型上 Scale up，随着模型参数量的增加模型的性能也提升，而在 Year Parity 任务上，CoT-Decoding 同样能进行 Scale up，但是贪婪解码却无法 Scale up，甚至在更大的模型上的性能更差。</p>
         
         <figure>
-          <img src="across-models.png" alt="across-models">
+          <img src="/blogs/2025/CoT-Decoding/across-models.png" alt="across-models">
           <figcaption>图8：CoT-Decoding 在不同模型上的性能。</figcaption>
         </figure>
         
         <figure>
-          <img src="across-size.png" alt="across-size">
+          <img src="/blogs/2025/CoT-Decoding/across-size.png" alt="across-size">
           <figcaption>图9：CoT-Decoding 在不同参数量模型上的性能。</figcaption>
         </figure>
 
@@ -413,14 +413,14 @@
         <p>上面的实验均是在预训练模型上进行的，指令微调模型具有更好的指令遵循能力以及在训练过程中的一些监督数据就包含了推理过程，这为模型的推理提供了一些基础。如图 10 所示，可以看到 CoT-Decoding 为预训练模型和指令微调模型均能带来相应的收益，但指令微调的收益小于 CoT-Decoding，这或许说明存在一定的推理能力瓶颈。</p>
         
         <figure>
-          <img src="10.png" alt="10">
+          <img src="/blogs/2025/CoT-Decoding/10.png" alt="10">
           <figcaption>图10：预训练模型与指令微调模型对比</figcaption>
         </figure>
         
         <p>通过选择不同的 $k$，如图 11 所示，可以看到随着 $k$ 的增加，准确率也随之上升，但是在指令微调模型上在一定的 $k$ 值后达到稳定，在更难的 Multi-step Arith 任务上，指令微调模型也显示出更为靠前的 $k$ 的稳定值，这可能表明，指令微调可以帮助模型将推理步骤带到更为靠前的解码步骤上。</p>
         
         <figure>
-          <img src="diff_k.png" alt="diff_k">
+          <img src="/blogs/2025/CoT-Decoding/diff_k.png" alt="diff_k">
           <figcaption>图11：不同 $k$ 值下的情况</figcaption>
         </figure>
 
