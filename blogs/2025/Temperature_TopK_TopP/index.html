@@ -1,1 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  
+<head>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+      --text-color: #333;
+      --sidebar-width: 280px;
+      --content-width: 1200px;
+    }
 
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 20px;
+      background-color: #f9f9f9;
+    }
+
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--primary-color);
+      margin-top: 1.5em;
+    }
+
+    h1 { 
+      font-size: 2.2em;
+      margin-top: 0.8em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid var(--light-gray);
+      padding-bottom: 0.3em;
+    }
+    
+    h2 { 
+      font-size: 1.8em; 
+      border-bottom: 1px solid var(--light-gray); 
+      padding-bottom: 0.3em; 
+      margin-top: 1.8em;
+    }
+    
+    h3 { 
+      font-size: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    /* 导航栏样式 */
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      background-color: var(--primary-color);
+      padding: 1em;
+      border-radius: 5px;
+      margin-bottom: 2em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav a {
+      color: white;
+      margin: 0 1em;
+      font-weight: 500;
+      padding: 0.5em 0;
+      transition: all 0.3s;
+    }
+
+    .nav a:hover {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    /* 主要内容布局 */
+    .main-content {
+      display: flex;
+      gap: 2em;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+      background: white;
+      padding: 2em;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 侧边栏样式 */
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      width: var(--sidebar-width);
+      padding: 1.5em;
+      border-radius: 10px;
+      margin-bottom: 2em;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar strong {
+      display: block;
+      font-size: 1.1em;
+      color: var(--primary-color);
+      padding-bottom: 0.8em;
+      margin-bottom: 0.8em;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 0.6em;
+      position: relative;
+      padding-left: 1em;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 6px;
+      height: 6px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:hover:before {
+      background-color: var(--accent-color);
+      transform: scale(1.3);
+    }
+
+    .sidebar a {
+      color: var(--primary-color);
+      display: block;
+      padding: 0.3em 0;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent-color);
+      padding-left: 5px;
+    }
+
+    /* 博客特定样式 */
+    .blog-meta {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-bottom: 1.5em;
+      display: flex;
+      align-items: center;
+    }
+
+    .blog-tag {
+      background-color: var(--light-gray);
+      color: var(--primary-color);
+      padding: 0.2em 0.6em;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-left: 0.8em;
+    }
+
+    .blog-content {
+      margin-top: 1.5em;
+    }
+
+    .blog-content p {
+      margin-bottom: 1.2em;
+    }
+
+    pre {
+      background-color: #f5f5f5;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #f5f5f5;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    figure {
+      margin: 1.5em 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    figcaption {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-top: 0.5em;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--secondary-color);
+      padding-left: 1em;
+      margin: 1.5em 0;
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+
+    /* 数学公式样式 */
+    .math {
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: relative;
+        width: auto;
+        top: auto;
+      }
+      
+      .nav {
+        justify-content: center;
+      }
+      
+      .nav a {
+        margin: 0 0.8em;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- 修改MathJax配置以支持行内公式 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 启用行内数学公式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']] // 显示数学公式
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+  
+</head>
+
+<body>
+  <div class="nav">
+    <a href="https://wangqiyao.me/">Homepage</a>
+    <a href="https://wangqiyao.me/blogs/">Blogs</a>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar sticky">
+      <div id="toc">
+        <strong>Table of Contents</strong>
+        <ul></ul>
+      </div>
+    </div>
+    
+    <div class="content">
+      <h1 id="Temperature_TopK_TopP">Three Sampling Methods: Temperature, Top K and Top P</h1>
+      <div class="blog-meta">
+        <span>Feb. 27, 2025 · Qiyao Wang</span>
+        <span class="blog-tag">#Decoding</span>
+      </div>
+
+      <div class="blog-content">
+        <h2 id="temperature-sampling">Temperature Sampling</h2>
+        <p>通过调整 temperature 能够改变选择某些 token 的概率分布，放大或减少其中的采样的随机性。一般其取值范围在 [0, +∞] 之间，当温度接近 1 时，保留原始的采样分布；当温度接近 0 时，会逐渐变成单峰分布，即与 Greedy Search 类似；而当温度越大，如 $>1$，极端情况趋于 ∞ 时，采样分布会逐渐趋于均匀分布。</p>
+        <p>对于序列 $\mathbf(x)=(x_1,x_2,...,x_m)$，利用温度参数 $T$ 进行放缩 $\frac{x_i}{T}$，之后进行 Softmax 计算</p>
+        <div class="math">
+          $$p(x_i)=\frac{e^{\frac{x_i}{T}}}{\sum_j e^{\frac{x_j}{T}}}$$
+        </div>
+        <p>修改基类 Sampler 中函数</p>
+<pre>
+<code class="language-python">def get_next_token_prob_logits(self, input_ids:torch.Tensor):
+    # 禁止计算图中梯度的计算
+    with torch.no_grad():
+    logits = self.model(input_ids=input_ids).logits
+    # 在此之前，logits 形状为 torch.Size([1, 1, 151936])
+    # 获得 Tensor 的最后一维度 torch.Size([151936])
+    logits = logits[0, -1, :]
+    probs = torch.softmax(logits, dim=-1)
+    return probs, logits</code>
+</pre>
+        <p>Temperature的相关代码和事例</p>
+<pre>
+<code class="language-python">class RandomTempSampler(Sampler):
+    def __call__(self, prompt, max_new_tokens=10, temp: float=0.5):
+        predictions = []
+        result = prompt
+        # generate until max_len
+        for i in range(max_new_tokens):
+            input_ids = self.encode(result)
+            next_token_logits = self.get_next_token_prob_logits(input_ids)[1]
+            next_token_logits /= temp
+            probs = torch.softmax(next_token_logits, dim=-1)
+            # 根据概率分布随机采样
+            ids = torch.multinomial(probs, num_samples=1).item()
+            result += self.decode(ids)
+            predictions.append(probs[ids].item)
+        return result
+
+    def sample_plot(self, prompt, temp: float=0.5):
+        input_ids = self.encode(prompt)
+
+        nex_token_probs = self.get_next_token_prob_logits(input_ids)[1]
+        nex_token_probs /= temp
+        probs = torch.softmax(nex_token_probs, dim=-1)
+
+        self.plot_scores(probs, title=f"Temperature: {temp}", k=10)</code>
+</pre>
+        <p>对于 "the color of sky is" 进行不同温度的采样，如下面三幅图所示，可以看到，随着 temperature 的变大，分布逐渐均匀。</p>
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/temp-0.1.png" alt="probs">
+          <figcaption>图1：Temperature 0.1，结果为 'The color of sky is blue. The color of the sky is a ( ) of the color of the'</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/temp-0.9.png" alt="probs">
+          <figcaption>图2：Temperature 0.9，结果为 'The color of sky is dark gray, whose density is a positive integer. Now, choose a random sample'</figcaption>
+        </figure>
+
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/temp-100.png" alt="probs">
+          <figcaption>图3：Temperature 100，结果为 (真的是乱码，随机性太大了) 'The color of sky is слишком человек𝗱Lights\'].\'" @[coverslandırılerase⛷趕🏁 containing BecStrokeGU'，几乎已经为均匀分布</figcaption>
+        </figure>
+
+        <h2 id="top-k-sampling">Top K Sampling</h2>
+        <p>Top K 采样在每一次选择 next token 时，只确保最有可能的 $K$ 个 token 能够被选择。当 $k=1$ 时，退化为 Greedy Search；当 $k=|V|$ 时，退化为纯采样。Top K 和 Temperature 可以结合使用，调整 Top K 中的随机性。</p>
+        <p>K 的确定需要特别注意。K 较小时可能会导致文本多样性下降，K 大时会导致包含不合适的词的候选。</p>
+<pre>
+<code class="language-python">class TOPKSampler(Sampler):
+    def __call__(self, prompt, max_new_tokens=10, top_k=1, temp: float=0.5):
+        predictions = []
+        result = prompt
+        # generate until max_len
+        for i in range(max_new_tokens):
+            input_ids = self.encode(result)
+            nex_token_logits = self.get_next_token_prob_logits(input_ids)[1]
+            nex_token_logits = nex_token_logits / temp
+            # 类似于 mask，将概率小的logits 换成 -inf
+            indices_to_remove = nex_token_logits < torch.topk(nex_token_logits,top_k)[0][...,-1, None]
+            new_logits = torch.clone(nex_token_logits)
+            new_logits[indices_to_remove] = float('-inf')
+
+            probs = torch.softmax(new_logits, dim=-1)
+            ids = torch.multinomial(probs, num_samples=1).item()
+            result += self.decode(ids)
+            predictions.append(probs[ids].item)
+        return result
+
+    def sample_plot(self, prompt,top_k=5, temp: float=0.5):
+        input_ids = self.encode(prompt)
+        next_token_logtis = self.get_next_token_prob_logits(input_ids)[1]
+        next_token_logtis = next_token_logtis / temp
+
+        indices_to_remove = next_token_logtis < torch.topk(next_token_logtis,top_k)[0][...,-1, None]
+        new_logits = torch.clone(next_token_logtis)
+        new_logits[indices_to_remove] = float('-inf')
+
+        probs = torch.softmax(new_logits, dim=-1)
+        self.plot_scores(probs, title=f"Temperature: {temp} Top K:{top_k}", k= top_k + int(math.sqrt(top_k)))</code>
+</pre>
+        <p>对于 "the color of sky is" 进行带有温度的 TopK 采样，其中 $K=10,T=0.5$ 时的结果为 "The color of sky is blue. If you want to make the sky appear blue, you can use a certain amount of blue paint. If you want to make the sky appear yellow,"。</p>
+        <p>调整不同的温度，如图4和图5所示</p>
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/topk-10-0.1.png" alt="probs">
+          <figcaption>图4：Temperature: 0.1, TopK: 10</figcaption>
+        </figure>
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/topk-10-0.9.png" alt="probs">
+          <figcaption>图5：Temperature: 0.9, TopK: 10</figcaption>
+        </figure>
+
+        <h2 id="top-p-sampling">Top P Sampling</h2>
+        <p>Top P Sampling 又称为核采样，其与 Top K Sampling 类似，通过对可选择的词集进行某种限制，来选择最小的词集。Top P Sampling 通过限制最小词集中所有词的概率和小于 $p$ 来实现动态调整候选词。</p>
+<pre>
+<code class="language-python">class NucleusSampler(Sampler):
+    def __call__(self, prompt, max_new_tokens=10, p: float=0.7):
+        predictions = []
+        result = prompt
+        # generate until max_len
+        for i in range(max_new_tokens):
+            input_ids = self.encode(result)
+            next_token_logits = self.get_next_token_prob_logits(input_ids)[1]
+            sorted_logits, sorted_indices = torch.sort(next_token_logits, descending=True)
+            cumulative_probs = torch.cumsum(torch.softmax(sorted_logits, dim=-1), dim=-1)
+
+            sorted_indices_to_remove = cumulative_probs > p
+
+            # 这句话需要斟酌
+            sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+            sorted_indices_to_remove[..., 0] = 0
+
+            indices_to_remove = sorted_indices[sorted_indices_to_remove]
+            new_logits = torch.clone(next_token_logits)
+            new_logits[indices_to_remove] = float('-inf')
+
+            scores = torch.softmax(new_logits, dim=-1)
+            ids = torch.multinomial(scores, num_samples=1).item()
+
+            result += self.decode(ids)
+
+            predictions.append(scores[ids].item)
+
+        return result
+
+    def sample_plot(self, prompt,p: float=0.7):
+        input_ids = self.encode(prompt)
+        next_token_logits = self.get_next_token_prob_logits(input_ids)[1]
+        sorted_logits, sorted_indices = torch.sort(next_token_logits, descending=True)
+        cumulative_probs = torch.cumsum(torch.softmax(sorted_logits, dim=-1), dim=-1)
+
+        sorted_indices_to_remove = cumulative_probs > p
+        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+        sorted_indices_to_remove[..., 0] = 0
+
+        indices_to_remove = sorted_indices[sorted_indices_to_remove]
+        new_logits = torch.clone(sorted_logits)
+        new_logits[indices_to_remove] = float('-inf')
+
+        probs = torch.softmax(new_logits, dim=-1)
+        self.plot_scores(probs, title=f"P: {p}", k=10)</code>
+</pre>
+        <p>对于 "the color of sky is" 在 $p=0.8$ 时的输出结果为 "The color of sky is blue. This belongs to\nA. The subject of cognition\nB. The"</p>
+        <p>其中在不同的 $p$ 值下的采样情况如图6和图7所示</p>
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/topp-0.8.png" alt="probs">
+          <figcaption>图6：P: 0.8</figcaption>
+        </figure>
+        <figure>
+          <img src="/blogs/2025/Temperature_TopK_TopP/topp-0.1.png" alt="probs">
+          <figcaption>图7：P: 0.1</figcaption>
+        </figure>
+
+        <h1 id="reference">Reference</h1>
+
+        <h1 id="contact">Contact</h1>
+        <p>There may be some errors present. If you find any, please feel free to contact me at <code>wangqiyao@mail.dlut.edu.cn</code>. I would appreciate it!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 动态生成目录
+    const toc = document.getElementById('toc');
+    toc.innerHTML = '<strong>Table of Contents</strong>';
+
+    const ul = document.createElement('ul');
+    toc.appendChild(ul);
+
+    // 获取所有标题
+    const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    headers.forEach(header => {
+        // 忽略 h1，不添加到目录中
+        if (header.tagName === 'H1') return;
+
+        const li = document.createElement('li');
+        li.style.marginLeft = `${(parseInt(header.tagName[1]) - 1) * 10}px`;
+
+        const a = document.createElement('a');
+        a.href = `#${header.id || header.innerText.replace(/\s+/g, '-').toLowerCase()}`;
+        a.textContent = header.innerText;
+        a.target = "_self";
+
+        // 如果是 h2，使用黑色实心点
+        if (header.tagName === 'H2') {
+            li.style.listStyleType = 'disc';  // 黑色实心圆点
+            a.style.color = 'black';  // h2 为黑色
+        }
+        // 如果是 h3，使用空心圆点
+        else if (header.tagName === 'H3') {
+            li.style.listStyleType = 'circle';  // 空心圆点
+            a.style.color = 'gray';  // h3 为灰色
+        }
+        // 如果是 h4，使用方块
+        else if (header.tagName === 'H4') {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h4 为灰色
+        }
+        // 如果是 h5 和 h6，使用方块
+        else {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h5 和 h6 为灰色
+        }
+
+        if (!header.id) {
+            header.id = header.innerText.replace(/\s+/g, '-').toLowerCase();
+        }
+
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    // 添加MathJax类型提示
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
+  </script>
+</body>
+</html>
