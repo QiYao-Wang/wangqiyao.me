@@ -69,12 +69,79 @@
             padding: 1em;
             border-radius: 5px;
             margin-bottom: 2em;
+            position: relative;
         }
 
         .nav a {
             color: white;
             margin: 0 1em;
             font-weight: 500;
+            position: relative;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+            padding-right: 1.2em;
+        }
+
+        .dropdown-toggle::after {
+            content: "▼";
+            font-size: 0.6em;
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s;
+        }
+
+        .dropdown-toggle:hover::after {
+            color: var(--accent-color);
+        }
+
+        .dropdown-toggle.active::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            z-index: 100;
+            padding: 0.5em 0;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        .dropdown-menu a {
+            color: var(--primary-color);
+            padding: 0.5em 1em;
+            display: block;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: var(--light-gray);
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .badge {
@@ -211,7 +278,7 @@
 
         .content {
             flex: 1;
-            min-width: 0; /* Prevent flex item overflow */
+            min-width: 0;
         }
 
         @media (max-width: 768px) {
@@ -233,41 +300,11 @@
                 margin-right: 0;
                 margin-bottom: 1em;
             }
-        }
 
-        /* Dropdown menu styles */
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 2px;
-            z-index: 1;
-            border-radius: 5px;
-            list-style-type: none;
-        }
-
-        .dropdown-content li {
-            display: block;
-            padding: 2px;
-            text-align: left;
-            margin-left: 5px;
-        }
-
-        .dropdown-content a {
-            display: block;
-            text-decoration: none;
-            color: gray;
-        }
-
-        .dropdown-content strong {
-            font-weight: bold;
-            color: black;
-        }
-
-        .dropdown-content.show {
-            display: block;
+            .dropdown-menu {
+                left: auto;
+                right: 0;
+            }
         }
     </style>
 </head>
@@ -275,8 +312,13 @@
 
     <div class="nav">
         <a href="https://wangqiyao.me">Homepage</a>
-        <a href="https://ipeval.wangqiyao.me">IPEval</a>
-        <a href="https://ipbench.wangqiyao.me/">IPBench</a>
+        <div class="dropdown">
+            <a class="dropdown-toggle">Benchmark</a>
+            <div class="dropdown-menu">
+                <a href="https://ipeval.wangqiyao.me">IPEval</a>
+                <a href="https://ipbench.wangqiyao.me/">IPBench</a>
+            </div>
+        </div>
         <a href="https://autopatent.wangqiyao.me">AutoPatent</a>
     </div>
 
@@ -435,11 +477,31 @@
                     section.offsetTop <= fromTop &&
                     section.offsetTop + section.offsetHeight > fromTop
                 ) {
-                    link.style.color = var(--accent-color);
+                    link.style.color = 'var(--accent-color)';
                     link.style.fontWeight = 'bold';
                 } else {
                     link.style.color = '';
                     link.style.fontWeight = '';
+                }
+            });
+        });
+
+        // Dropdown menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.querySelector('.dropdown-toggle');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                dropdownToggle.classList.toggle('active');
+                dropdownMenu.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.dropdown')) {
+                    dropdownToggle.classList.remove('active');
+                    dropdownMenu.classList.remove('show');
                 }
             });
         });
