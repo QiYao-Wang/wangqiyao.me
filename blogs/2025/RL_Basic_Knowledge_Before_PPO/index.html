@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  
+<head>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --light-gray: #ecf0f1;
+      --dark-gray: #7f8c8d;
+      --text-color: #333;
+      --sidebar-width: 280px;
+      --content-width: 1200px;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      max-width: var(--content-width);
+      margin: 0 auto;
+      padding: 0 20px;
+      background-color: #f9f9f9;
+    }
+
+    a {
+      color: var(--secondary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5 {
+      color: var(--primary-color);
+      margin-top: 1.5em;
+    }
+
+    h1 { 
+      font-size: 2.2em;
+      margin-top: 0.8em;
+      margin-bottom: 0.5em;
+      border-bottom: 2px solid var(--light-gray);
+      padding-bottom: 0.3em;
+    }
+    
+    h2 { 
+      font-size: 1.8em; 
+      border-bottom: 1px solid var(--light-gray); 
+      padding-bottom: 0.3em; 
+      margin-top: 1.8em;
+    }
+    
+    h3 { 
+      font-size: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    /* 导航栏样式 */
+    .nav {
+      display: flex;
+      justify-content: flex-end;
+      background-color: var(--primary-color);
+      padding: 1em;
+      border-radius: 5px;
+      margin-bottom: 2em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .nav a {
+      color: white;
+      margin: 0 1em;
+      font-weight: 500;
+      padding: 0.5em 0;
+      transition: all 0.3s;
+    }
+
+    .nav a:hover {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    /* 主要内容布局 */
+    .main-content {
+      display: flex;
+      gap: 2em;
+    }
+
+    .content {
+      flex: 1;
+      min-width: 0;
+      background: white;
+      padding: 2em;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* 侧边栏样式 */
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      width: var(--sidebar-width);
+      padding: 1.5em;
+      border-radius: 10px;
+      margin-bottom: 2em;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .sidebar strong {
+      display: block;
+      font-size: 1.1em;
+      color: var(--primary-color);
+      padding-bottom: 0.8em;
+      margin-bottom: 0.8em;
+      border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .sidebar ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .sidebar li {
+      margin-bottom: 0.6em;
+      position: relative;
+      padding-left: 1em;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.6em;
+      width: 6px;
+      height: 6px;
+      background-color: var(--secondary-color);
+      border-radius: 50%;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar li:hover:before {
+      background-color: var(--accent-color);
+      transform: scale(1.3);
+    }
+
+    .sidebar a {
+      color: var(--primary-color);
+      display: block;
+      padding: 0.3em 0;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .sidebar a:hover {
+      color: var(--accent-color);
+      padding-left: 5px;
+    }
+
+    /* 博客特定样式 */
+    .blog-meta {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-bottom: 1.5em;
+      display: flex;
+      align-items: center;
+    }
+
+    .blog-tag {
+      background-color: var(--light-gray);
+      color: var(--primary-color);
+      padding: 0.2em 0.6em;
+      border-radius: 3px;
+      font-size: 0.8em;
+      margin-left: 0.8em;
+    }
+
+    .blog-content {
+      margin-top: 1.5em;
+    }
+
+    .blog-content p {
+      margin-bottom: 1.2em;
+    }
+
+    pre {
+      background-color: #f5f5f5;
+      padding: 1em;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 1.5em 0;
+      border-left: 4px solid var(--secondary-color);
+    }
+
+    code {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #f5f5f5;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+
+    figure {
+      margin: 1.5em 0;
+      text-align: center;
+    }
+
+    figure img {
+      max-width: 100%;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    figcaption {
+      color: var(--dark-gray);
+      font-size: 0.9em;
+      margin-top: 0.5em;
+    }
+
+    blockquote {
+      border-left: 4px solid var(--secondary-color);
+      padding-left: 1em;
+      margin: 1.5em 0;
+      color: var(--dark-gray);
+      font-style: italic;
+    }
+
+    /* 数学公式样式 */
+    .math {
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 900px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .sidebar {
+        position: relative;
+        width: auto;
+        top: auto;
+      }
+      
+      .nav {
+        justify-content: center;
+      }
+      
+      .nav a {
+        margin: 0 0.8em;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- 修改MathJax配置以支持行内公式 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 启用行内数学公式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']] // 显示数学公式
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+  
+</head>
+
+<body>
+  <div class="nav">
+    <a href="https://wangqiyao.me/">Homepage</a>
+    <a href="https://wangqiyao.me/blogs/">Blogs</a>
+  </div>
+
+  <div class="main-content">
+    <div class="sidebar sticky">
+      <div id="toc">
+        <strong>Table of Contents</strong>
+        <ul></ul>
+      </div>
+    </div>
+    
+    <div class="content">
+      <h1 id="RL_Basic_Knowledge_Before_PPO">Basic Knowledge of Reinforcement Learning before PPO</h1>
+      <div class="blog-meta">
+        <span>Feb. 23, 2025 - Feb. 24, 2025 · Qiyao Wang</span>
+        <span class="blog-tag">#RL</span>
+      </div>
+
+      <div class="blog-content">
+        <p>Claim：本文参考 <a href="https://newfacade.github.io/notes-on-reinforcement-learning/03-approach.html">notes on Reinforcement Learning</a> 和 <a href="https://www.youtube.com/playlist?list=PLJV_el3uVTsODxQFgzMzPLa16h6B8kWM_">Hung-yi Lee</a> 总结记录学习，记录难点和分析，最基础的内容不赘述。</p>
+
+        <h2 id="basic-concept">Basic Concept</h2>
+        <p><strong>What's the Reinforcement Learning: A formal definition</strong></p>
+        <p>Reinforcement learning is a framework for solving control tasks (also called decision problems) by building agents that learn from the environment by interacting with it through trial and error and receiving rewards (positive or negative) as unique feedback.</p>
+        <p>Translation: 强化学习是一种 通过构建 与环境交互并从试错中学习的代理来解决控制任务（也称为决策问题）的框架。代理通过试错与环境交互，并根据其行为收到正向或负向的奖励作为唯一的反馈。</p>
+
+        <p><strong>Difference between Observations and States</strong></p>
+        <p>Observations 和 States 都表示 Agent 从环境中获取的信息，在概念上二者几乎一致，仅在信息的覆盖范围上存在差异，在实现上一般会进行区分。二者的区别如下：</p>
+        <ul>
+          <li>State $s$: is a <strong>complete</strong> description of the state of the world (there is no hidden information). 全部信息，无隐藏内容。</li>
+          <li>Observation $o$: is a <strong>partial</strong> description of the state. 部分信息。</li>
+        </ul>
+
+        <h2 id="two-main-approaches"><strong>Two main approaches for solving RL problems</strong></h2>
+        <p>RL 的目标是得到一个好的 Agent，即得到一个最优的 Policy Model $\pi^*$，能够根据当前的环境的 State 做出良好的决策。Policy Model $\pi$ 的优化目标是最大化期望回报（expected return）。</p>
+        <p>训练 Agent 得到最优 policy $\pi^*$ 的方法有两种：</p>
+        <ul>
+          <li>Policy-Based Methods: 直接地训练模型在给定 State 的情况下，选择适合的 Action。</li>
+          <li>Value-Based Methods: 训练模型能够判断更有价值的 State，并且采取适合的 Action，来达到更有价值的 State。</li>
+        </ul>
+
+        <h3 id="policy-based-methods">Policy-Based Methods</h3>
+        <p>对于 Policy-Based Methods，其目标是直接学一个 policy function。对于<strong> Action 是离散的，</strong> policy model $\pi$ 给定 State 返回适合的 Action</p>
+        <div class="math">
+          $$a_t = \pi(s_t)$$
+        </div>
+        <p>对于<strong> Action 是连续的</strong> policy model $\pi$ 实际上返回的是一个 Action distribution，适合的 Action 应该能够从该分布中被采样出来</p>
+        <div class="math">
+          $$a_t\sim\pi(\cdot|s_t)$$
+        </div>
+
+        <h3 id="value-based-methods">Value-Based Methods</h3>
+        <p>对于 Value-Based Methods，其目标是能够预测在某一 State $s$ 下的 accumulated expected return （state-value function $V_{\pi}(s)$）或某一 State $s$ 下采取 Action $a$ 后的 accumulated expected return (action-value function $Q_{\pi}(s,a)$)。</p>
+        <h4 id="state-value-function">The state-value function</h4>
+        <div class="math">
+          $$V_{\pi}(s) = \mathbb{E}_{\pi}[G_t|S_t=s]$$
+        </div>
+        <p>state-value function 的含义是估计在 State $s$ 的条件下，累积折扣回报 $G_t=\sum_{k=0}^∞\gamma^kR_{t+k+1}$ 的期望值大小。</p>
+
+        <h4 id="action-value-function">The action-value function</h4>
+        <div class="math">
+          $$Q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_t|S_t=s,A_t=a]$$
+        </div>
+        <p>action-value function 实际上是 state-action-value function，即在给定 State $s$ 和 Action $a$ 的条件下，累积折扣回报 $G_t$ 的期望值大小。由此可见，Value-Based Method 的估计目标都是：$G_t$，即累积折扣回报的期望值大小。</p>
+
+        <h3 id="relation-v-q">Relation between V and Q Function</h3>
+        <p>从定义看，$V_\pi$ 和 $Q_\pi$ 都是对累积折扣回报 $G_t$ 的期望值估计，但是二者所站角度不同。$Q_\pi$ 相较于 $V_\pi$ 而言，要考虑 Action $a$ 条件的影响，而 $V_\pi$ 则不关心 Action，从 $Q_\pi$ 得到 $V_\pi$ 的公式如下</p>
+        <div class="math">
+          $$V_{\pi}(s)=\sum_{a\in\mathcal A}\pi(a|s)Q_\pi(s,a)$$
+        </div>
+        <p>即，对 $Q_\pi$ 中的 Action 进行期望的计算，排除其中选择某一 Action 的影响，而是在 Action Space 下的期望值。而 $Q_\pi(s,a)$ 中的 $a$ 其实也仅考虑了一步 State $s$ 下的 Action，对于之后的 State 并不强制其 Action，可借此与 $V_\pi$ 关联</p>
+        <div class="math">
+          $$Q_\pi(s,a) = \sum_{s'\in\mathcal S}P(s'|s,a)[R(s,a,s')+\gamma V_\pi(s')]$$
+        </div>
+        <p>其中，State $s$ 和 该状态下的 Action $a$ 固定，而后续的 State 不确定，会从 State Space $\mathcal{S}$ 中进行采样，因此对于 State $s$ 采取 Action $a$ 后的下一个状态 $s'$ 需要结合<strong>状态转移函数</strong> $P(s'|s,a)$ 进行计算。$R(s,a,s')$ 则为从 State $s$, Action $a$ 转移为 State $s'$ 后环境给予的 Reward 值，$V_\pi(s')$ 则表示在 State $s'$ 条件下，未来的累积折扣期望值。</p>
+
+        <h3 id="bellman-equation">Bellman Equation</h3>
+        <p>Bellman Equation 与上述从 $V_\pi$ 得到 $Q_\pi$ 的公式较为类似，以一种动态规划/递归的形式，将在当前状态下的 expected return 拆解为 当前立即得到的 Reward 与对未来（下一状态）的 expected return 的估计。</p>
+        <p><strong>Bellman Equation of the state-value function</strong></p>
+        <div class="math">
+          $$V_\pi(s)=\mathbb{E}_\pi[R_{t+1}+\gamma*V_\pi(S_{t+1})|S_t=s]$$
+        </div>
+        <p><strong>Bellman Equation of the action-value function</strong></p>
+        <div class="math">
+          $$Q_\pi(s,a)=\mathbb{E}_\pi[R_{t+1}+\gamma*Q_{\pi}(S_{t+1},A_{t+1})|S_t=s,A_t=a]$$
+        </div>
+        <h4 id="closed-form">Closed-form Solution</h4>
+        <p>上述方程，无论是对于 $V$ 还是 $Q$ Function 的思想都是一致的，Bellman Equation 为这两类 Value Function 提供了简化计算的方法。将 $V$ 与 $Q$ 关系中的式子融合，可以得到</p>
+        <div class="math">
+          $$V_\pi(s)=\sum_{a\in\mathcal A}\pi(a|s)\sum_{s'\in\mathcal S}P(s'|s,a)[R(s,a,s')+\gamma V_\pi(s')]$$
+        </div>
+        <p>将上面的公式转化为矩阵形式，可以先看一下每个元素的含义，其中 $P(s'|s,a)$ 为状态转移的概率，$R(s,a,s')$ 为当前状态下的 reward，那么下面将这些元素矩阵化，将有以下内容</p>
+        <ul>
+          <li>转移概率矩阵 $P_\pi\in\mathbb{R}^{|\mathcal{S}|\times|\mathcal{S}|}$： ${P}_\pi$ 代表在给定策略 $\pi$ 下，从状态 $s$ 到状态 $s'$ 的转移概率。它是通过对所有可能的动作 $a$ 进行加权求和得到的。
+            <div class="math">
+              $$P_\pi(s,s')=\sum_{a\in\mathcal A}\pi(a|s)\cdot P(s'|s,a)$$
+            </div>
+          </li>
+          <li>奖励向量 $\mathbf{r}_\pi\in\mathbb{R}^{|\mathcal{S}|\times1}$：表示在状态 $s$ 下，按照策略 $\pi$ 选择动作，经过状态转移得到的即时奖励的期望值
+            <div class="math">
+              $$R_\pi(s) = \sum_{a\in\mathcal A}\sum_{s'\in\mathcal{S}}\pi(a|s)P(s'|s,a)R(s,a,s')$$
+            </div>
+          </li>
+        </ul>
+        <p>因此，矩阵形式为</p>
+        <div class="math">
+          $$\mathbf{v}_\pi=\mathbf{r}_\pi+\gamma P_\pi\mathbf{v}_\pi$$
+        </div>
+        <p>经过矩阵运算，当 $I-\gamma P_\pi$ 可逆时，$\mathbf{v}_\pi=(I-\gamma P_\pi)^{-1}\mathbf{r}_\pi$ 为 Bellman Equation 的唯一解。</p>
+        <p>基于 <a href="https://newfacade.github.io/notes-on-reinforcement-learning/04-bellman.html">Gershgorin circle theorem</a> 可以证明 $I-\gamma P_\pi$ 可逆，此处略，因此 Bellman Equation 具有唯一的闭合解，这为之后的基于对 Bellman Equation 优化的方法提供了基础。</p>
+
+        <h4 id="optimal-action-value">Optimal action-value</h4>
+        <p>基于贝尔曼最优方程 (<a href="https://newfacade.github.io/notes-on-reinforcement-learning/05-bellman-optimal.html">The Bellman Optimality Equation, BOE</a>)，能够推导出最优的价值函数的形式解，推导最优的 policy model $\pi^*$，也就是说，BOE 的解，对应了最优的 state-value $V^*$ 和 policy $\pi^*$，基于这两者能够得到最优的 action-value $Q^*$。</p>
+        <div class="math">
+          $$\begin{aligned}
+          V^*(s)&=\max_aQ^*(s,a)\\
+          &=\max_a\sum_{s'\in\mathcal{S}}P(s'|s,a)[R(s,a,s')+\gamma V^*(s')]
+          \end{aligned}$$
+        </div>
+
+        <div class="math">
+          $$\begin{aligned}
+          Q^*(s)&=\sum_{s'\in\mathcal{S}}P(s'|s,a)[R(s,a,s')+\gamma V^*(s')]\\
+          &=\sum_{s'\in\mathcal{S}}P(s'|s,a)[R(s,a,s')+\gamma \max_aQ^*(s,a)]
+          \end{aligned}$$
+        </div>
+
+        <p><strong style="color: darkred">第一次了解 Bellman Equation，此部分逻辑不清，需梳理。</strong></p>
+
+        <h2 id="monte-carlo-td">Monte Carlo & TD Learning</h2>
+        <h3 id="monte-carlo">Monte Carlo</h3>
+        <p>使用蒙特卡罗算法进行 value function 的参数更新时，对于累积折扣回报 $G_t$ 的计算，<strong>一直到整个 episode 结束</strong>，这样的估计会使得 Agent 能力较为精准，但是数据的方差大，训练不稳定。</p>
+        <div class="math">
+          $$V(S_t)\leftarrow V(S_t)+\alpha[G_t-V(S_t)]$$
+        </div>
+
+        <h3 id="td-learning">Temporal Difference Learning</h3>
+        <p>使用 TD Learning 来进行 value function 的参数更新，在每一步都进行，而不关注 $G_t$，关注当前步的即时奖励 $R_{t+1}$ 和下一状态的 value。这也称为 bootstrapping，因为 TD Learning 基于现有 value function 估计 $V(S_{t+1})$，而不是整个 episode 的累积奖励 $G_t$。</p>
+        <div class="math">
+          $$V(S_t)\leftarrow V(S_t)+\alpha[R_{t+1}+\gamma V(S_{t+1})-V(S_t)]$$
+        </div>
+        <p>其中 $R_{t+1}+\gamma V(S_{t+1})$ 称为 TD Target。对于 action-value function，将上述公式的 $V$ function 换为 $Q$ function 即可。</p>
+
+        <h2 id="q-learning">Q-Learning</h2>
+        <p>Q-Learning 是一种 TD Learning 的扩展（特殊形式），可以直接估计最优的 action-value，并且找到最优的 policy。</p>
+        <div class="math">
+          $$Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha[R_{t+1}+\gamma\max_a Q(S_{t+1},a)-Q(S_t,A_t)]$$
+        </div>
+        <p>与 TD Learning 相比，Q-Learning 要求其 TD Target 的第二项必须是下一个 State 的折扣估计的最优的 Q-value。但其实这个 $a=\arg\max Q$ 不好得到。Q-Learning 也是一种解决 BOE 的随机逼近算法。具体算法描述不再赘述，如其中对 DQN 的 Fixed 等见 Hung-yi Lee PPT。</p>
+
+        <h2 id="off-on-policy">Off-policy and On-policy</h2>
+        <p>Q-Learning 与其他 TD Learning 算法不同的是，它是一种 off-policy 的算法。</p>
+        <p>RL 中包含两类 policy，一种是 behavior policy，另一个是 target policy。其中 behavior policy 用于生成训练数据，而 target policy 则被参数更新至收敛。</p>
+        <p>当 behavior policy 与 target policy 一致时，即生成训练数据与训练模型是同一个模型进行时，则称为 on-policy 的算法；当生成数据与被训练模型不同时，则为 off-policy，此时先通过 behavior policy 与环境进行大量交互，生成大批的训练数据后，再对 target policy 进行训练。</p>
+
+        <h2 id="policy-gradient">Policy Gradient</h2>
+        <p>对于 Policy-Based Method 而言，更希望以一种无需学习 value function 的方式来直接优化 policy，得到最优的 policy model $\pi^*$。其中 policy model $\pi_\theta$ 以 State $s_t$ 作为输入，输出则为 actions 的概率分布。与有监督学习的梯度下降类似的是，可以使用 Policy-Gradient 来优化 policy model。</p>
+        <p>优化目标：使用 gradient ascent（梯度上升）maximize 参数化 policy model $\pi_\theta$ 的参数 $\theta$，来获得更大的期望累积回报 expected cumulative reward $J(\theta)$。</p>
+
+        <div class="math">
+          $$\begin{aligned}
+          J(\theta)&=\mathbb{E}_{\tau\sim\pi}[R(\tau)]\\
+          &=\sum_{\tau}P(\tau;\theta)R(\tau)
+          \end{aligned}$$
+        </div>
+
+        <div class="math">
+          $$P(\tau;\theta)=\prod_{t=0}P(s_{t+1}|s_t,a_t)\pi_\theta(a_t|s_t)$$
+        </div>
+
+        <div class="math">
+          $$\theta\leftarrow\theta+\alpha * \nabla J(\theta)$$
+        </div>
+
+        <h3 id="policy-gradient-theorem">The Policy Gradient Theorem</h3>
+        <p>优化 $J(\theta)$ 存在一些问题。第一，无法计算所有策略，依据大数定理利用采样的策略进行估计的优化；第二，其中与状态转移概率相关，此概率由环境决定，难以微分。可以使用 Policy Gradient Theorem 来重新表述。</p>
+        <div class="math">
+          $$\begin{aligned}
+          \nabla_\theta J(\theta)&=\nabla_\theta\sum_{\tau}P(\tau;\theta)R(\tau)\\
+          &=\sum_\tau\nabla_\theta P(\tau;\theta)R(\tau)\\
+          &=\sum_\tau P(\tau;\theta)\frac{\nabla_\theta P(\tau;\theta)}{P(\tau;\theta)}R(\tau)\\
+          &\xlongequal{\nabla \log f(x) = \frac{\nabla f(x)}{f(x)}}\sum_\tau P(\tau;\theta)\nabla_\theta\log P(\tau;\theta)R(\tau)\\
+          &=\sum_\tau P(\tau;\theta)\nabla_\theta\{\log \mu(s_0) + \sum_{t=0}^H [ \log P(s_{t+1} \mid s_t, a_t) + \log \pi_\theta(a_t \mid s_t)]\}R(\tau)\\
+          &=\sum_\tau P(\tau;\theta)\{\nabla_\theta \log \mu(s_0) + \sum_{t=0}^H[\nabla_\theta \log P(s_{t+1} \mid s_t, a_t) + \nabla_\theta \log \pi_\theta(a_t \mid s_t)]\}R(\tau)\\
+          &= \sum_\tau P(\tau;\theta) \sum_{t=0}^H \nabla_\theta \log \pi_\theta(a_t \mid s_t)R(\tau)\\
+          &=\mathbb{E}_{\pi_\theta}[\nabla_\theta\log \pi_\theta(a_t \mid s_t)R(\tau)]
+          \end{aligned}$$
+        </div>
+
+        <p>上述的优化目标 $J(\theta)$ 最终就不再受环境影响。则在 Monte Carlo Reinforce 中，在一个训练循环中，首先利用 policy model $\pi_\theta$ 收集一个 batch（大小为 $m$） 的 episodes/trajectories，之后利用这个 batch 的数据来计算 gradient 优化 $\pi_\theta$，由于为 Monte Carlo，利用的是一个完整的 episode。</p>
+        <div class="math">
+          $$\nabla_\theta J(\theta)\approx \frac{1}{m}\sum_{i=1}^m\sum_{t=0}\nabla_\theta\log \pi_\theta(a_t^{(i)}\mid s_t^{(i)})R(\tau^{(i)})$$
+        </div>
+        <p>进一步优化，一个直观的想法：Action 只对它之后的状态产生影响。因此可以去除当前步之前的奖励，即不使用一整个 episode 的 reward $R(\tau)$，而是 step $t$ 之后的累积回报。</p>
+        <div class="math">
+          $$\nabla_\theta J(\theta)=\mathbb{E}_{\tau\sim\theta}[\sum_{t=0}^T\nabla_\theta\log\pi_\theta(a_t\mid s_t)\sum_{t'=t}^T R(s_{t'},a_{t'},s_{t'+1})]$$
+        </div>
+
+        <div class="math">
+          $$\hat{R}_t=\sum_{t'=t}^T R(s_{t'},a_{t'},s_{t'+1})$$
+        </div>
+
+        <p>通常会在 $\hat{R}_t$ 中增加一项 baseline $b(s_t)$ 来使得奖励有正有负，便于优化。</p>
+
+        <div class="math">
+          $$\hat{R}_t=\sum_{t'=t}^T R(s_{t'},a_{t'},s_{t'+1}-b(s_t))$$
+        </div>
+
+        <h3 id="advantages-disadvantages">Advantages and Disadvantages of policy-gradient methods</h3>
+        <p><strong>Advantages over value-based methods</strong></p>
+        <ul>
+          <li>Policy-gradient methods <strong>can learn a stochastic policy</strong> while value functions can't.</li>
+          <li>Policy-gradient methods are <strong>more effective</strong> in high-dimensional action spaces and continuous actions spaces.</li>
+          <li>Policy-gradient methods have <strong>better convergence properties</strong>.</li>
+        </ul>
+        <p><strong>Disadvantages</strong></p>
+        <ul>
+          <li>Frequently, it converges to a <strong>local maximum</strong> instead of a global optimum.</li>
+          <li>Training goes slower, step by step which needs longer time.</li>
+          <li>Have <strong>high variance</strong>.</li>
+        </ul>
+
+        <h2 id="actor-critic">Actor-Critic Methods</h2>
+        <p>Actor-Critic Method 融合了 value-based 和 policy-based methods，通过减少方差帮助模型训练更稳定。其中 Actor 其实就是 Agent，或者说是 Policy-Based Method 中的 $\pi_\theta$；而 Critic 相当于是 Value-Based Method 中的 Q Function，来衡量 action 的好坏。</p>
+        <h3 id="a2c">Advantage Actor-Critic (A2C)</h3>
+        <p>A2C 中的学习目标：A policy model $\pi_\theta(s)$；A value function $\hat{q}_w(s,a)$。具体的优化过程如下：</p>
+        <ul>
+          <li>在每一步 timestep $t$，从环境中得到当前的状态 $S_t$</li>
+          <li>Actor Model 将 $S_t$ 作为输入，输出一个合适的 Action $A_t$</li>
+          <li>Critic Model 将 $S_t, A_t$ 共同作为输入，输出在该状态下采取该行动将得到的 Q-value 的估计</li>
+          <li>在环境中执行 $A_t$ 将会进行状态转移，得到一个 Reward $R_{t+1}$，环境的状态也会转移至 $S_{t+1}$</li>
+          <li>Actor Model 使用 Critic Model 给出的 Q-value 值进行参数的更新
+            <div class="math">
+              $$\Delta \theta = \alpha\nabla_\theta(\log \pi_\theta(s,a))\hat{q}_w(s,a)$$
+            </div>
+          </li>
+          <li>Actor Model 经历过参数更新后，会根据新状态 $S_{t+1}$ 给出对应的合适的 Action $A_{t+1}$</li>
+          <li>Critic Model 则利用 Q-Learning 的呃方式，更新其参数
+            <div class="math">
+              $$\Delta w=\beta(r_{t+1}+\gamma\hat{q}_w(s_{t+1},a_{t+1})-\hat{q}_w(s_t,a_t))\nabla_w \hat{q}_w(s_t,a_t)$$
+            </div>
+          </li>
+        </ul>
+        <p>进一步地，将 Q-Function 改为 Advantage Function 来稳定模型的训练</p>
+        <div class="math">
+          $$\begin{aligned}
+          A(s,a)&=Q(s,a)-V(s)\\
+          &=r+\gamma V(s')-V(s)
+          \end{aligned}$$
+        </div>
+        <p>这样只需要估计具有更小方差的 state value 就可以进行 Critic Model 的优化，可以将 $\Delta w$ 中的 $r_{t+1}+\gamma\hat{q}_w(s_{t+1},a_{t+1})-\hat{q}_w(s_t,a_t)$ 替换为 $A(s,a)$。</p>
+
+        <p>End. 后续将从 PPO 的前身 TRPO 开启 PPO。</p>
+
+        <h1 id="reference">Reference</h1>
+
+        <h1 id="contact">Contact</h1>
+        <p>There may be some errors present. If you find any, please feel free to contact me at <code>wangqiyao@mail.dlut.edu.cn</code>. I would appreciate it!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 动态生成目录
+    const toc = document.getElementById('toc');
+    toc.innerHTML = '<strong>Table of Contents</strong>';
+
+    const ul = document.createElement('ul');
+    toc.appendChild(ul);
+
+    // 获取所有标题
+    const headers = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+    headers.forEach(header => {
+        // 忽略 h1，不添加到目录中
+        if (header.tagName === 'H1') return;
+
+        const li = document.createElement('li');
+        li.style.marginLeft = `${(parseInt(header.tagName[1]) - 1) * 10}px`;
+
+        const a = document.createElement('a');
+        a.href = `#${header.id || header.innerText.replace(/\s+/g, '-').toLowerCase()}`;
+        a.textContent = header.innerText;
+        a.target = "_self";
+
+        // 如果是 h2，使用黑色实心点
+        if (header.tagName === 'H2') {
+            li.style.listStyleType = 'disc';  // 黑色实心圆点
+            a.style.color = 'black';  // h2 为黑色
+        }
+        // 如果是 h3，使用空心圆点
+        else if (header.tagName === 'H3') {
+            li.style.listStyleType = 'circle';  // 空心圆点
+            a.style.color = 'gray';  // h3 为灰色
+        }
+        // 如果是 h4，使用方块
+        else if (header.tagName === 'H4') {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h4 为灰色
+        }
+        // 如果是 h5 和 h6，使用方块
+        else {
+            li.style.listStyleType = 'square';  // 方块
+            a.style.color = 'gray';  // h5 和 h6 为灰色
+        }
+
+        if (!header.id) {
+            header.id = header.innerText.replace(/\s+/g, '-').toLowerCase();
+        }
+
+        li.appendChild(a);
+        ul.appendChild(li);
+    });
+
+    // 添加MathJax类型提示
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
+    });
+  </script>
+</body>
+</html>
