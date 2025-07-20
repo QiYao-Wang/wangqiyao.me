@@ -270,6 +270,30 @@
       scroll-behavior: smooth;
     }
   </script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  
+  <!-- 修改MathJax配置以支持行内公式 -->
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],  // 启用行内数学公式
+        displayMath: [['$$', '$$'], ['\\[', '\\]']] // 显示数学公式
+      }
+    };
+  </script>
+  <script type="text/javascript" id="MathJax-script" async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+  </script>
+  
+  <script>hljs.highlightAll();</script>
+  <script>
+    html {
+      scroll-behavior: smooth;
+    }
+  </script>
+  
 </head>
 
 <body>
@@ -676,6 +700,13 @@ return X, y</code>
 
         li.appendChild(a);
         ul.appendChild(li);
+    });
+
+    // 添加MathJax类型提示
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise();
+      }
     });
   </script>
 </body>
