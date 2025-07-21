@@ -43,7 +43,7 @@
 
         h1, h2, h3, h4, h5 {
             color: var(--primary-color);
-            margin-top: 1em;
+            margin-top: 1.5em;
         }
 
         h1 { font-size: 2.2em; }
@@ -145,30 +145,28 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .badge {
-            display: inline-block;
-            padding: 0.25em 0.5em;
-            color: white;
-            border-radius: 3px;
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-right: 0.5em;
+        /* Paper status styles */
+        .paper-status {
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 0.5em;
+            text-align: center;
         }
-
-        .badge-preprint {
-            background-color: #3498db;
+        
+        .preprint {
+            color: #3498db;
         }
-
-        .badge-arxiv {
-            background-color: #9b59b6;
+        
+        .arxiv {
+            color: #9b59b6;
         }
-
-        .badge-conference {
-            background-color: #e74c3c;
+        
+        .conference {
+            color: #e74c3c;
         }
-
-        .badge-journal {
-            background-color: #2ecc71;
+        
+        .journal {
+            color: #2ecc71;
         }
 
         /* Enhanced Paper Box Styles */
@@ -192,12 +190,14 @@
         .paper-box-image {
             flex: 0 0 250px;
             margin-right: 1.5em;
-            position: relative;
-            align-self: flex-start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .paper-box-image img {
-            width: 100%;
+            max-width: 100%;
             height: auto;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -232,15 +232,10 @@
         }
 
         .paper-tldr {
-            background-color: rgba(236, 240, 241, 0.5);
-            padding: 0.8em;
-            border-radius: 4px;
+            font-size: 0.95em;
+            color: #555;
             margin: 1em 0;
-            border-left: 3px solid var(--secondary-color);
-        }
-
-        .paper-tldr strong {
-            color: var(--primary-color);
+            line-height: 1.5;
         }
 
         .paper-links {
@@ -425,7 +420,7 @@
         </div>
         
         <div class="content">
-            <h1>Large Language Models for Patent</h1>
+            <h1 style="margin-top:0.5em">Large Language Models for Patent</h1>
             <p><strong>Team</strong>: Shenzhen Institute of Advanced Technology, Chinese Academy of Sciences; Dalian University of Technology</p>
             <p><strong>Student Member</strong>: <a href="https://wangqiyao.me/">Qiyao Wang</a></p>
             <div>
@@ -461,17 +456,15 @@
 
             <div class='paper-box'>
                 <div class='paper-box-image'>
-                    <div>
-                        <div class="badge badge-preprint">Preprint</div>
-                        <img src='../images/publications/ipbench.png' alt="IPBench" width="100%">
-                    </div>
+                    <div class="paper-status preprint">Preprint</div>
+                    <img src='../images/publications/ipbench.png' alt="IPBench" width="100%">
                 </div>
                 <div class='paper-box-text'>
                     <p class="paper-title"><a href="">IPBench: Benchmarking the Knowledge of Large Language Models in Intellectual Property</a></p>
                     <p class="paper-authors"><em><strong>Qiyao Wang</strong>, Guhong Chen, Hongbo Wang, Huaren Liu, Minghui Zhu, Zhifei Qin, Linwei Li, Yilin Yue, Shiqiang Wang, Jiayan Li, Yihang Wu, Ziqiang Liu, Longze Chen, Run Luo, Liyang Fan, Jiaming Li, Lei Zhang, Kan Xu, Hongfei Lin, Hamid Alinejad-Rokny, Shiwen Ni<sup>†</sup>, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
-                    <div class="paper-tldr">
-                        <strong>TL;DR: </strong>IPBench is a comprehensive benchmark for evaluating LLMs' knowledge in intellectual property domains, covering patent law, trademark, copyright, and trade secrets across multiple languages and jurisdictions.
-                    </div>
+                    <p class="paper-tldr">
+                        <strong>TL;DR:</strong> IPBench is a comprehensive benchmark for evaluating LLMs' knowledge in intellectual property domains, covering patent law, trademark, copyright, and trade secrets across multiple languages and jurisdictions.
+                    </p>
                     <div class="paper-links">
                         <a href="https://ipbench.wangqiyao.me">Website</a>
                         <a href="https://arxiv.org/abs/2504.15524">Paper</a>
@@ -485,17 +478,15 @@
             
             <div class='paper-box'>
                 <div class='paper-box-image'>
-                    <div>
-                        <div class="badge badge-preprint">Preprint</div>
-                        <img src='../images/publications/autopatent.png' alt="AutoPatent" width="100%">
-                    </div>
+                    <div class="paper-status preprint">Preprint</div>
+                    <img src='../images/publications/autopatent.png' alt="AutoPatent" width="100%">
                 </div>
                 <div class='paper-box-text'>
                     <p class="paper-title"><a href="https://arxiv.org/pdf/2412.09796">AutoPatent: A Multi-Agent Framework for Automatic Patent Generation</a></p>
                     <p class="paper-authors"><em><strong>Qiyao Wang<sup>*</sup></strong>, Shiwen Ni<sup>*</sup>, Huaren Liu, Shule Lu, Guhong Chen, Xi Feng, Chi Wei, Qiang Qu, Hamid Alinejad-Rokny, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
-                    <div class="paper-tldr">
-                        <strong>TL;DR: </strong>We introduce Draft2Patent, a novel task for generating full-length patents (~17K tokens) from drafts, along with the D2P benchmark. Our AutoPatent framework, leveraging a multi-agent system, excels in patent generation, with Qwen2.5-7B outperforming larger models like GPT-4o and Qwen2.5-72B in metrics and human evaluations.
-                    </div>
+                    <p class="paper-tldr">
+                        <strong>TL;DR:</strong> We introduce Draft2Patent, a novel task for generating full-length patents (~17K tokens) from drafts, along with the D2P benchmark. Our AutoPatent framework, leveraging a multi-agent system, excels in patent generation, with Qwen2.5-7B outperforming larger models like GPT-4o and Qwen2.5-72B in metrics and human evaluations.
+                    </p>
                     <div class="paper-links">
                         <a href="https://autopatent.wangqiyao.me">Website</a>
                         <a href="https://arxiv.org/pdf/2412.09796">Paper</a>
@@ -509,17 +500,15 @@
 
             <div class='paper-box'>
                 <div class='paper-box-image'>
-                    <div>
-                        <div class="badge badge-arxiv">Arxiv</div>
-                        <img src='../images/publications/ipeval.png' alt="IPEval" width="100%">
-                    </div>
+                    <div class="paper-status arxiv">Arxiv</div>
+                    <img src='../images/publications/ipeval.png' alt="IPEval" width="100%">
                 </div>
                 <div class='paper-box-text'>
                     <p class="paper-title"><a href="https://arxiv.org/pdf/2406.12386">IPEval: A Bilingual Intellectual Property Agency Consultation Evaluation Benchmark for Large Language Models</a></p>
                     <p class="paper-authors"><em><strong>Qiyao Wang</strong>, Jianguo Huang, Shule Lu, Yuan Lin<sup>†</sup>, Kan Xu, Liang Yang, Hongfei Lin</em></p>
-                    <div class="paper-tldr">
-                        <strong>TL;DR: </strong>IPEval introduces a benchmark for assessing Large Language Models' (LLMs) performance in intellectual property (IP) law with 2,657 questions. It evaluates LLMs across key IP areas using zero-shot, 5-few-shot, and Chain of Thought (CoT) approaches. Findings highlight the need for specialized IP LLMs due to language proficiency bias. The benchmark is crucial for developing LLMs with deeper IP knowledge.
-                    </div>
+                    <p class="paper-tldr">
+                        <strong>TL;DR:</strong> IPEval introduces a benchmark for assessing Large Language Models' (LLMs) performance in intellectual property (IP) law with 2,657 questions. It evaluates LLMs across key IP areas using zero-shot, 5-few-shot, and Chain of Thought (CoT) approaches. Findings highlight the need for specialized IP LLMs due to language proficiency bias. The benchmark is crucial for developing LLMs with deeper IP knowledge.
+                    </p>
                     <div class="paper-links">
                         <a href="https://ipeval.wangqiyao.me">Website</a>
                         <a href="https://arxiv.org/pdf/2406.12386">Paper</a>
