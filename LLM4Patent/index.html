@@ -28,6 +28,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            background-color: #f9f9f9;
         }
 
         a {
@@ -147,7 +148,6 @@
         .badge {
             display: inline-block;
             padding: 0.25em 0.5em;
-            background-color: var(--secondary-color);
             color: white;
             border-radius: 3px;
             font-size: 0.8em;
@@ -155,16 +155,45 @@
             margin-right: 0.5em;
         }
 
+        .badge-preprint {
+            background-color: #3498db;
+        }
+
+        .badge-arxiv {
+            background-color: #9b59b6;
+        }
+
+        .badge-conference {
+            background-color: #e74c3c;
+        }
+
+        .badge-journal {
+            background-color: #2ecc71;
+        }
+
+        /* Enhanced Paper Box Styles */
         .paper-box {
             display: flex;
-            margin-bottom: 2em;
-            padding-bottom: 1em;
-            border-bottom: 1px dashed var(--light-gray);
+            margin-bottom: 2.5em;
+            padding: 1.5em;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .paper-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: rgba(0,0,0,0.1);
         }
 
         .paper-box-image {
             flex: 0 0 250px;
             margin-right: 1.5em;
+            position: relative;
+            align-self: flex-start;
         }
 
         .paper-box-image img {
@@ -172,15 +201,77 @@
             height: auto;
             border: 1px solid #ddd;
             border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .paper-box:hover .paper-box-image img {
+            transform: scale(1.02);
         }
 
         .paper-box-text {
             flex: 1;
+            min-width: 0;
         }
 
         .paper-box-text p {
             margin: 0.5em 0;
+        }
+
+        .paper-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 0.5em;
+            color: var(--primary-color);
+        }
+
+        .paper-authors {
+            font-style: italic;
+            margin-bottom: 0.8em;
+            color: #555;
+        }
+
+        .paper-tldr {
+            background-color: rgba(236, 240, 241, 0.5);
+            padding: 0.8em;
+            border-radius: 4px;
+            margin: 1em 0;
+            border-left: 3px solid var(--secondary-color);
+        }
+
+        .paper-tldr strong {
+            color: var(--primary-color);
+        }
+
+        .paper-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8em;
+            align-items: center;
+            margin-top: 1em;
+        }
+
+        .paper-links a {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.4em 0.8em;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            color: var(--primary-color);
+            font-size: 0.9em;
+        }
+
+        .paper-links a:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        .paper-links a::before {
+            content: "🔗";
+            margin-right: 0.4em;
+            font-size: 0.9em;
         }
 
         .news-item {
@@ -194,7 +285,7 @@
             color: var(--accent-color);
         }
 
-        /* 侧边栏美化 */
+        /* Sidebar styles */
         .sidebar {
             position: sticky;
             top: 20px;
@@ -299,6 +390,7 @@
             .paper-box-image {
                 margin-right: 0;
                 margin-bottom: 1em;
+                flex: 0 0 auto;
             }
 
             .dropdown-menu {
@@ -362,7 +454,7 @@
             </div>
 
             <h2 id="introduction">Introduction</h2>
-            <p></p>
+            <p>This page showcases our research on applying Large Language Models (LLMs) to the field of intellectual property and patents. Our work includes benchmark development, automatic patent generation, and evaluation frameworks.</p>
 
             <h2 id="our-work">Our Work</h2>
             <p><sup>*</sup>Equal Contribution and <sup>†</sup> Corresponding Author</p>
@@ -370,66 +462,73 @@
             <div class='paper-box'>
                 <div class='paper-box-image'>
                     <div>
-                        <div class="badge">Preprint</div>
+                        <div class="badge badge-preprint">Preprint</div>
                         <img src='../images/publications/ipbench.png' alt="IPBench" width="100%">
                     </div>
                 </div>
                 <div class='paper-box-text'>
-                    <p><a href="">IPBench: Benchmarking the Knowledge of Large Language Models in Intellectual Property</a></p>
-                    <p><em><strong>Qiyao Wang</strong>, Guhong Chen, Hongbo Wang, Huaren Liu, Minghui Zhu, Zhifei Qin, Linwei Li, Yilin Yue, Shiqiang Wang, Jiayan Li, Yihang Wu, Ziqiang Liu, Longze Chen, Run Luo, Liyang Fan, Jiaming Li, Lei Zhang, Kan Xu, Hongfei Lin, Hamid Alinejad-Rokny, Shiwen Ni<sup>†</sup>, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
-                    <p>
-                        <a href="https://ipbench.wangqiyao.me">Website</a> |
-                        <a href="https://arxiv.org/abs/2504.15524">Paper</a> |
-                        <a href="https://github.com/IPBench/IPBench">Github</a>
+                    <p class="paper-title"><a href="">IPBench: Benchmarking the Knowledge of Large Language Models in Intellectual Property</a></p>
+                    <p class="paper-authors"><em><strong>Qiyao Wang</strong>, Guhong Chen, Hongbo Wang, Huaren Liu, Minghui Zhu, Zhifei Qin, Linwei Li, Yilin Yue, Shiqiang Wang, Jiayan Li, Yihang Wu, Ziqiang Liu, Longze Chen, Run Luo, Liyang Fan, Jiaming Li, Lei Zhang, Kan Xu, Hongfei Lin, Hamid Alinejad-Rokny, Shiwen Ni<sup>†</sup>, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
+                    <div class="paper-tldr">
+                        <strong>TL;DR: </strong>IPBench is a comprehensive benchmark for evaluating LLMs' knowledge in intellectual property domains, covering patent law, trademark, copyright, and trade secrets across multiple languages and jurisdictions.
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://ipbench.wangqiyao.me">Website</a>
+                        <a href="https://arxiv.org/abs/2504.15524">Paper</a>
+                        <a href="https://github.com/IPBench/IPBench">GitHub</a>
                         <a href="https://github.com/IPBench/IPBench">
                             <img src="https://img.shields.io/github/stars/IPBench/IPBench" alt="IPBench">
                         </a>
-                    </p>
+                    </div>
                 </div>
             </div>
             
             <div class='paper-box'>
                 <div class='paper-box-image'>
                     <div>
-                        <div class="badge">Preprint</div>
+                        <div class="badge badge-preprint">Preprint</div>
                         <img src='../images/publications/autopatent.png' alt="AutoPatent" width="100%">
                     </div>
                 </div>
                 <div class='paper-box-text'>
-                    <p><a href="https://arxiv.org/pdf/2412.09796">AutoPatent: A Multi-Agent Framework for Automatic Patent Generation</a></p>
-                    <p><em><strong>Qiyao Wang<sup>*</sup></strong>, Shiwen Ni<sup>*</sup>, Huaren Liu, Shule Lu, Guhong Chen, Xi Feng, Chi Wei, Qiang Qu, Hamid Alinejad-Rokny, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
-                    <p><strong>TL;DR: </strong>We introduce Draft2Patent, a novel task for generating full-length patents (~17K tokens) from drafts, along with the D2P benchmark. Our AutoPatent framework, leveraging a multi-agent system, excels in patent generation, with Qwen2.5-7B outperforming larger models like GPT-4o and Qwen2.5-72B in metrics and human evaluations.</p>
-                    <p>
-                        <a href="https://autopatent.wangqiyao.me">Website</a> |
-                        <a href="https://arxiv.org/pdf/2412.09796">Paper</a> |
-                        <a href="https://github.com/QiYao-Wang/AutoPatent">Github</a>
+                    <p class="paper-title"><a href="https://arxiv.org/pdf/2412.09796">AutoPatent: A Multi-Agent Framework for Automatic Patent Generation</a></p>
+                    <p class="paper-authors"><em><strong>Qiyao Wang<sup>*</sup></strong>, Shiwen Ni<sup>*</sup>, Huaren Liu, Shule Lu, Guhong Chen, Xi Feng, Chi Wei, Qiang Qu, Hamid Alinejad-Rokny, Yuan Lin<sup>†</sup>, Min Yang<sup>†</sup></em></p>
+                    <div class="paper-tldr">
+                        <strong>TL;DR: </strong>We introduce Draft2Patent, a novel task for generating full-length patents (~17K tokens) from drafts, along with the D2P benchmark. Our AutoPatent framework, leveraging a multi-agent system, excels in patent generation, with Qwen2.5-7B outperforming larger models like GPT-4o and Qwen2.5-72B in metrics and human evaluations.
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://autopatent.wangqiyao.me">Website</a>
+                        <a href="https://arxiv.org/pdf/2412.09796">Paper</a>
+                        <a href="https://github.com/QiYao-Wang/AutoPatent">GitHub</a>
                         <a href="https://github.com/QiYao-Wang/AutoPatent">
                             <img src="https://img.shields.io/github/stars/QiYao-Wang/AutoPatent" alt="AutoPatent">
                         </a>
-                    </p>
+                    </div>
                 </div>
             </div>
 
             <div class='paper-box'>
                 <div class='paper-box-image'>
                     <div>
-                        <div class="badge">Arxiv</div>
+                        <div class="badge badge-arxiv">Arxiv</div>
                         <img src='../images/publications/ipeval.png' alt="IPEval" width="100%">
                     </div>
                 </div>
                 <div class='paper-box-text'>
-                    <p><a href="https://arxiv.org/pdf/2406.12386">IPEval: A Bilingual Intellectual Property Agency Consultation Evaluation Benchmark for Large Language Models</a></p>
-                    <p><em><strong>Qiyao Wang</strong>, Jianguo Huang, Shule Lu, Yuan Lin<sup>†</sup>, Kan Xu, Liang Yang, Hongfei Lin</em></p>
-                    <p><strong>TL;DR: </strong>IPEval introduces a benchmark for assessing Large Language Models' (LLMs) performance in intellectual property (IP) law with 2,657 questions. It evaluates LLMs across key IP areas using zero-shot, 5-few-shot, and Chain of Thought (CoT) approaches. Findings highlight the need for specialized IP LLMs due to language proficiency bias. The benchmark is crucial for developing LLMs with deeper IP knowledge.</p>
-                    <p>
-                        <a href="https://ipeval.wangqiyao.me">Website</a> |
-                        <a href="https://arxiv.org/pdf/2406.12386">Paper</a> |
-                        <a href="https://github.com/QiYao-Wang/IPEval">Github</a> |
+                    <p class="paper-title"><a href="https://arxiv.org/pdf/2406.12386">IPEval: A Bilingual Intellectual Property Agency Consultation Evaluation Benchmark for Large Language Models</a></p>
+                    <p class="paper-authors"><em><strong>Qiyao Wang</strong>, Jianguo Huang, Shule Lu, Yuan Lin<sup>†</sup>, Kan Xu, Liang Yang, Hongfei Lin</em></p>
+                    <div class="paper-tldr">
+                        <strong>TL;DR: </strong>IPEval introduces a benchmark for assessing Large Language Models' (LLMs) performance in intellectual property (IP) law with 2,657 questions. It evaluates LLMs across key IP areas using zero-shot, 5-few-shot, and Chain of Thought (CoT) approaches. Findings highlight the need for specialized IP LLMs due to language proficiency bias. The benchmark is crucial for developing LLMs with deeper IP knowledge.
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://ipeval.wangqiyao.me">Website</a>
+                        <a href="https://arxiv.org/pdf/2406.12386">Paper</a>
+                        <a href="https://github.com/QiYao-Wang/IPEval">GitHub</a>
                         <a href="https://huggingface.co/datasets/Mathsion/IPEval">HuggingFace</a>
-                        <a href="https://github.com/QiYao-Wang/ipeval">
-                            <img src="https://img.shields.io/github/stars/QiYao-Wang/ipeval" alt="IPEval">
+                        <a href="https://github.com/QiYao-Wang/IPEval">
+                            <img src="https://img.shields.io/github/stars/QiYao-Wang/IPEval" alt="IPEval">
                         </a>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
