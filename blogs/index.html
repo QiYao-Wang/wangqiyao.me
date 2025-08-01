@@ -318,26 +318,26 @@
     // 自动统计每个Topic的博客数量
     const topicCounts = {};
     const blogs = document.querySelectorAll('.blog-item');
-
+    
     blogs.forEach(blog => {
-      const topicTag = blog.querySelector('.blog-tag');
-      if (topicTag) {
-        const topic = topicTag.innerText.trim();
-        topicCounts[topic] = (topicCounts[topic] || 0) + 1;
-      }
+        const topicTags = blog.querySelectorAll('.blog-tag');
+        topicTags.forEach(tag => {
+            const topic = tag.innerText.trim();
+            topicCounts[topic] = (topicCounts[topic] || 0) + 1;
+        });
     });
-
+    
     // 对Topic按字母顺序排序
     const sortedTopics = Object.entries(topicCounts).sort(([a], [b]) => a.localeCompare(b));
-
+    
     // 更新边栏Topics部分
     const topicsContainer = document.getElementById('topics');
     let topicsHTML = '<strong>Topics</strong>';
-
+    
     sortedTopics.forEach(([topic, count]) => {
-      topicsHTML += `<p><font color="gray">${topic} (${count} blogs)</font></p>`;
+        topicsHTML += `<p><font color="gray">${topic} (${count} blogs)</font></p>`;
     });
-
+    
     topicsContainer.innerHTML = topicsHTML;
 
     // 统计总博客数量
