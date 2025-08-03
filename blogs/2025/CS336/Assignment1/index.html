@@ -319,8 +319,7 @@
           <li><strong>Merges</strong>: 每一轮，计算每个元组中相邻元素组成的新 pair 的频率，选择频率最大的（相同频率时，选择字典序大的）pair 进行合并，作为引入的新 token，经过 $N$ 次迭代（超参数，此处使用 $N=6$）</li>
         </ol>
 <pre>
-<code class="language-python">
-from typing import Dict
+<code class="language-python">from typing import Dict
 from collections import Counter
 
 text = """low low low low low
