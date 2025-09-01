@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Group</title>
+    <meta property="og:locale" content="en">
+    <meta property="og:site_name" content="Qiyao Wang | NLPer">
+    <meta property="og:title" content="Qiyao Wang | NLPer">
+    <link rel="canonical" href="https://wangqiyao.me/">
+    <meta property="og:url" content="https://wangqiyao.me/lab">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--accent-color);
+        }
+
+        h1, h2, h3, h4, h5 {
+            color: var(--primary-color);
+            margin-top: 1.5em;
+        }
+
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; border-bottom: 1px solid var(--light-gray); padding-bottom: 0.3em; }
+        h3 { font-size: 1.5em; }
+
+        .header {
+            display: flex;
+            align-items: center;
+            /*margin: 0.5em 0;*/
+        }
+
+        .profile-img {
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 200px;
+            height: auto;
+            margin-right: 2em;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            background-color: var(--primary-color);
+            padding: 1em;
+            border-radius: 5px;
+            /*margin-bottom: 2em;*/
+        }
+
+        .nav a {
+            color: white;
+            margin: 0 1em;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.5em;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 0.5em;
+        }
+
+        .badge.TPAMI { background-color: #8e44ad; }
+        .badge.TKDE { background-color: #16a085; }
+        .badge.TNNLS { background-color: #c0392b; }
+        .badge.NeurIPS { background-color: #27ae60; }
+        .badge.ICML { background-color: #2980b9; }
+        .badge.CVPR { background-color: #e67e22; }
+        .badge.ICLR { background-color: #d35400; }
+        .badge.AAAI { background-color: #34495e; }
+        .badge.IJCAI { background-color: #9b59b6; }
+        .badge.ACM { background-color: #3498db; }
+        .badge.SIGIR { background-color: #1abc9c; }
+        .badge.BIB { background-color: #e74c3c; }
+        .badge.TMM { background-color: #f39c12; }
+        .badge.TIP { background-color: #2ecc71; }
+
+        .publication {
+            margin-bottom: 1.5em;
+            padding-bottom: 1em;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .publication img {
+            width: 150px;
+            height: auto;
+            border: 1px solid #ddd;
+            float: left;
+            margin-right: 1em;
+        }
+
+        .publication h4 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+        }
+
+        .publication .authors {
+            font-style: italic;
+            color: var(--dark-gray);
+            margin-bottom: 0.5em;
+        }
+
+        .publication .venue {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+
+        .publication .links a {
+            margin-right: 1em;
+            background-color: var(--light-gray);
+            padding: 0.3em 0.6em;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        .news-item {
+            margin-bottom: 1em;
+            padding-left: 1em;
+            border-left: 3px solid var(--light-gray);
+        }
+
+        .news-item .date {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .highlight {
+            background-color: #fffde7;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .section {
+            margin-bottom: 3em;
+        }
+
+        .contact-info {
+            background-color: var(--light-gray);
+            padding: 10px;
+            border-radius: 5px;
+            /*margin-top: 1em;*/
+        }
+
+        .quote {
+            font-family: 'Times New Roman', serif;
+            margin: 1em 0;
+            padding: 0.5em 1em;
+            border-left: 3px solid var(--secondary-color);
+            background-color: #f9f9f9;
+        }
+
+        .quote .author {
+            font-style: italic;
+            text-align: right;
+            display: block;
+            margin-top: 0.5em;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-img {
+                margin-right: 0;
+                margin-bottom: 1em;
+            }
+
+            .nav {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                margin: 0.5em;
+            }
+
+            .publication img {
+                float: none;
+                display: block;
+                margin: 0 auto 1em;
+            }
+        }
+
+        /* Dropdown menu styles */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            padding: 2px;
+            z-index: 1;
+            border-radius: 5px;
+            list-style-type: none;
+        }
+
+        .dropdown-content li {
+            display: block;
+            padding: 2px;
+            text-align: left;
+            margin-left: 5px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            text-decoration: none;
+            color: gray;
+        }
+
+        .dropdown-content strong {
+            font-weight: bold;
+            color: black;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        :root {
+            --base-font-weight: 410; /* Control boldness in one place */
+        }
+
+        body {
+            font-family: "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-weight: calc(var(--base-font-weight, 400) + 50); /* 50 units bolder */
+
+            /*line-height: 1.6;*/
+            /*color: var(--text-color);*/
+            /*max-width: 1200px;*/
+            /*margin: 0 auto;*/
+            /*padding: 0 20px;*/
+        }
+
+    </style>
+<!--    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">-->
+<!--    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">-->
+<!--    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">-->
+<!--    <link rel="manifest" href="images/site.webmanifest">-->
+<!--    <link rel="stylesheet" href="assets/css/academicons.css"/>-->
+</head>
+<body>
+
+    <div class="nav">
+        <a href="">Homepage</a>
+        <a href="#简介">简介</a>
+        <a href="#培训">培训</a>
+        <a href="#考核">考核</a>
+        <a href="#成员">成员</a>
+    </div>
+
+    <div id="简介" class="section">
+        <h2>简介</h2>
+        <p>
+        </p>
+    </div>
+
+    <div id="培训" class="section">
+        <h2>培训</h2>
+        <p>
+        </p>
+    </div>
+
+   <div id="考核" class="section">
+        <h2>考核</h2>
+        <p>
+        </p>
+    </div>
+
+   <div id="成员" class="section">
+        <h2>成员</h2>
+        <p>
+        </p>
+    </div>
+
+    <footer style="margin-top: 3em; padding: 1em 0; border-top: 1px solid var(--light-gray); text-align: center;">
+        &copy; 2025 Qiyao Wang. Last updated: September 2025.
+    </footer>
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
