@@ -302,9 +302,9 @@
     </div>
 
     <div class="content">
-      <h1 id="CS336-assignment1">CS336 Assignment 1: BPE Tokenizer's Detailed Implementation, Part I</h1>
+      <h1 id="CS336-assignment1">CS336 Assignment 1: BPE Tokenizer's Detailed Implementation</h1>
       <div class="blog-meta">
-        <span>Aug. 01, 2025 - Working · Qiyao Wang </span>
+        <span>Aug. 01, 2025 - Sep. 29, 2025 · Qiyao Wang </span>
         <span class="blog-tag">#Class</span><span class="blog-tag">#Basics</span>
       </div>
 
@@ -629,7 +629,14 @@ def train_bpe(
     print(f"BPE training finished in {end_time - start_time:.2f} seconds")
     return vocab, merges</code>
 </pre>
-          <p>上述代码，处理<code>TinyStories</code>数据集耗时3小时，应进行优化。</p>
+          <p>上述代码，处理<code>TinyStories</code>数据集耗时3小时 (11480.69s)，应进行优化；对于owt数据集则需要更长的时间，如何加速？。</p>
+
+          <h3>TODO List</h3>
+          <ul>
+              <li>分析BPE Tokenizer速度慢的原因，各环节耗时</li>
+              <li>设计方式加速BPE Tokenizer</li>
+          </ul>
+
 
         <h2 id="reference">Reference</h2>
         <p>[1] <a href="https://github.com/stanford-cs336/assignment1-basics/blob/main/cs336_spring2025_assignment1_basics.pdf">CS336 Assignment 1 (basics): Building a Transformer LM. Version 1.0.5</a></p>
